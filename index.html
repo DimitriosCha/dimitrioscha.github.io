@@ -23,7 +23,6 @@
             --text-tertiary: #998978;
             --accent-warm: #c17d4a;
             --accent-peach: #e8b89a;
-            --accent-cream: #f4ebe3;
             --accent-coral: #d89570;
             --accent-deep: #8b5a3c;
             --border-subtle: rgba(107, 93, 82, 0.15);
@@ -154,93 +153,95 @@
         }
 
         .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding-top: 8rem;
-    position: relative;
-    }
-    
-    /* OUTER RING + GLOW */
-    .hero-image-container {
-        width: clamp(190px, 28vw, 230px);
-        height: clamp(190px, 28vw, 230px);
-        border-radius: 50%;
-        /* let the glow breathe outside the circle */
-        overflow: visible;
-        margin-bottom: 2.5rem;
-        background: linear-gradient(135deg, var(--accent-warm), var(--accent-coral));
-        padding: 5px;
-        /* box-shadow will be applied via the 'float' keyframe for animation */
-        animation: float 6s ease-in-out infinite;
-        position: relative;
-    }
-    
-    .hero-image-container::before {
-        content: '';
-        position: absolute;
-        inset: -20px;
-        background: radial-gradient(circle, rgba(232, 184, 154, 0.3) 0%, transparent 70%);
-        border-radius: 50%;
-        z-index: -1;
-    }
-    
-    @keyframes float {
-        0%, 100% { 
-            transform: translateY(0px) scale(1); 
-            /* Strong shadow when landing/at base level (Y=0) */
-            box-shadow: 
-                0 20px 60px rgba(193, 125, 74, 0.25), /* Existing Glow */
-                0 8px 20px rgba(193, 125, 74, 0.15),  /* Existing Glow */
-                0 30px 70px rgba(26, 22, 20, 0.4);   /* New Ground Shadow (Strong) */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 8rem;
+            position: relative;
         }
-        50% { 
-            transform: translateY(-15px) scale(1.02); 
-            /* Weak shadow when levitating (Y=-15) */
-            box-shadow: 
-                0 20px 60px rgba(193, 125, 74, 0.25), /* Existing Glow */
-                0 8px 20px rgba(193, 125, 74, 0.15),  /* Existing Glow */
-                0 5px 10px rgba(26, 22, 20, 0.05);    /* New Ground Shadow (Weak) */
+    
+        /* OUTER RING + GLOW */
+        .hero-image-container {
+            width: clamp(190px, 28vw, 230px);
+            height: clamp(190px, 28vw, 230px);
+            border-radius: 50%;
+            /* let the glow breathe outside the circle */
+            overflow: visible;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, var(--accent-warm), var(--accent-coral));
+            padding: 5px;
+            /* box-shadow will be applied via the 'float' keyframe for animation */
+            animation: float 6s ease-in-out infinite;
+            position: relative;
         }
-    }
     
-    /* INNER CIRCLE THAT ACTUALLY CLIPS THE IMAGE */
-    .hero-image {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        background: var(--bg-secondary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-tertiary);
-        font-size: 0.9rem;
-        overflow: hidden; /* important: clipping happens here */
-        background-color: #E4CEB4;
-    }
+        .hero-image-container::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle, rgba(232, 184, 154, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
     
-    /* IMAGE ITSELF */
-    .hero-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;      /* show full image */
-        object-position: center bottom;  /* keep it centered */
-        display: block;
-    }
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0px) scale(1); 
+                box-shadow: 
+                    /* Self Glow */
+                    0 20px 60px rgba(193, 125, 74, 0.25), 
+                    0 8px 20px rgba(193, 125, 74, 0.15),
+                    /* Ground Shadow: Large offset (50px), large blur (60px), dark/high opacity (0.35) */
+                    0 50px 60px rgba(26, 22, 20, 0.35);   
+            }
+            50% { 
+                transform: translateY(-15px) scale(1.02); 
+                box-shadow: 
+                    /* Self Glow */
+                    0 20px 60px rgba(193, 125, 74, 0.25), 
+                    0 8px 20px rgba(193, 125, 74, 0.15),
+                    /* Ground Shadow: Minimized offset (2px), tiny blur (2px), nearly transparent (0.01) */
+                    0 2px 2px rgba(26, 22, 20, 0.01);    
+            }
+        }
+    
+        /* INNER CIRCLE THAT ACTUALLY CLIPS THE IMAGE */
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            overflow: hidden; /* important: clipping happens here */
+            background-color: #E4CEB4;
+        }
+    
+        /* IMAGE ITSELF */
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;      /* show full image */
+            object-position: center bottom;  /* keep it centered */
+            display: block;
+        }
         
-    .hero-title {
-        font-size: clamp(2.8rem, 6vw, 4.5rem);
-        font-weight: 300;
-        letter-spacing: -0.04em;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, var(--text-primary), var(--accent-deep), var(--accent-warm));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
+        .hero-title {
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            font-weight: 300;
+            letter-spacing: -0.04em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-deep), var(--accent-warm));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
         .hero-subtitle {
             font-size: clamp(1.1rem, 2.5vw, 1.4rem);
@@ -261,7 +262,6 @@
             font-size: 1.2rem;
             color: var(--accent-warm);
             font-weight: 500;
-            /* min-width: 280px; <- This was the original problem */
         }
 
         .typing-cursor {
