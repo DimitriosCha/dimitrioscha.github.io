@@ -1,792 +1,633 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>the signal, distilled.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg-page: #f5f6f8;
-      --bg-hero: #ffffff;
-      --bg-dark: #050608;
-      --bg-card: #ffffff;
-      --text-main: #111827;
-      --text-muted: #6b7280;
-      --accent: #4f46e5;
-      --accent-soft: #e0e7ff;
-      --border-subtle: #e5e7eb;
-      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.14);
-      --sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: var(--sans);
-      color: var(--text-main);
-      background: var(--bg-page);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    /* TOP BAR ------------------------------------------------------------ */
-    .top-bar {
-      background: var(--bg-dark);
-      color: #f9fafb;
-      padding: 14px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .top-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-circle {
-      width: 38px;
-      height: 38px;
-      border-radius: 999px;
-      border: 2px solid #f9fafb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-      font-size: 0.88rem;
-      text-transform: lowercase;
-    }
-
-    .nav-links a {
-      position: relative;
-      padding-bottom: 3px;
-    }
-
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      height: 1px;
-      width: 0;
-      background: linear-gradient(90deg, #38bdf8, #a855f7);
-      transition: width 0.18s ease;
-    }
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-    .top-right {
-      display: flex;
-      gap: 14px;
-      font-size: 0.85rem;
-    }
-
-    .top-right a {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      border: 1px solid rgba(249, 250, 251, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.15s ease, transform 0.1s ease;
-    }
-
-    .top-right a:hover {
-      background: rgba(249, 250, 251, 0.12);
-      transform: translateY(-1px);
-    }
-
-    /* PAGE WRAPPER ------------------------------------------------------ */
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 22px 80px;
-    }
-
-    /* HERO --------------------------------------------------------------- */
-    .hero {
-      background: var(--bg-hero);
-      border-radius: 24px;
-      box-shadow: var(--shadow-soft);
-      padding: 40px 50px 46px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      align-items: center;
-      gap: 32px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 0 0, rgba(79, 70, 229, 0.08) 0, transparent 55%),
-        radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.08) 0, transparent 55%);
-      pointer-events: none;
-      opacity: 0.8;
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      display: contents;
-    }
-
-    .hero-column {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .hero-left-label {
-      font-size: 2.2rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
-    .hero-right-label {
-      font-size: 2.2rem;
-      font-weight: 600;
-      text-align: right;
-      letter-spacing: 0.02em;
-    }
-
-    .hero-sub {
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      max-width: 260px;
-    }
-
-    .hero-sub.right {
-      text-align: right;
-      margin-left: auto;
-    }
-
-    .typing-line {
-      margin-top: 6px;
-      font-family: var(--mono);
-      font-size: 0.82rem;
-      color: var(--accent);
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 1px solid rgba(79, 70, 229, 0.8);
-      padding-right: 3px;
-      min-height: 1.1em;
-    }
-
-    .typing-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    .hero-center {
-      justify-self: center;
-    }
-
-    .avatar-circle {
-      width: 210px;
-      height: 210px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0, #e5e7eb 0, #d1d5db 22%, #9ca3af 70%);
-      padding: 6px;
-      position: relative;
-    }
-
-    .avatar-circle::after {
-      content: "";
-      position: absolute;
-      inset: 16px;
-      border-radius: 999px;
-      border: 1px dashed rgba(148, 163, 184, 0.7);
-      pointer-events: none;
-    }
-
-    .avatar-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 999px;
-      overflow: hidden;
-      background: #111827;
-    }
-
-    .avatar-inner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .hero-tagline {
-      margin-top: 12px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    /* SECTION WRAPPERS -------------------------------------------------- */
-    .section {
-      margin-top: 50px;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 26px;
-    }
-
-    .section-kicker {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--text-muted);
-    }
-
-    .section-title {
-      margin-top: 6px;
-      font-size: 1.2rem;
-      letter-spacing: 0.04em;
-    }
-
-    /* WORK GRID --------------------------------------------------------- */
-    .work-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border-radius: 18px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-      padding: 16px 16px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
-      border-color: rgba(79, 70, 229, 0.3);
-    }
-
-    .card-thumb {
-      border-radius: 12px;
-      overflow: hidden;
-      background: #e5e7eb;
-      height: 120px;
-    }
-
-    .card-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .card-title {
-      font-size: 0.96rem;
-      font-weight: 500;
-    }
-
-    .card-sub {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .card-tag {
-      margin-top: 4px;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--text-muted);
-    }
-
-    /* BLOG / PDF CARDS -------------------------------------------------- */
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .blog-card {
-      cursor: pointer;
-    }
-
-    .blog-card .card-meta {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .blog-card .card-title {
-      display: flex;
-      justify-content: space-between;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .pdf-pill {
-      font-size: 0.72rem;
-      font-family: var(--mono);
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-
-    /* PDF MODAL --------------------------------------------------------- */
-    .pdf-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.76);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 50;
-    }
-
-    .pdf-modal.open {
-      display: flex;
-    }
-
-    .pdf-modal-inner {
-      max-width: 960px;
-      width: 100%;
-      max-height: 90vh;
-      background: #0b1120;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .pdf-modal-header {
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 0.9rem;
-    }
-
-    .pdf-modal-header button {
-      border: none;
-      background: transparent;
-      color: #9ca3af;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-
-    .pdf-modal-header button:hover {
-      color: #e5e7eb;
-    }
-
-    .pdf-frame-wrap {
-      flex: 1;
-      background: #030712;
-    }
-
-    .pdf-frame-wrap iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* ABOUT TEXT STRIP -------------------------------------------------- */
-    .about-strip {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .about-strip strong {
-      color: var(--text-main);
-      font-weight: 500;
-    }
-
-    /* FOOTER ------------------------------------------------------------ */
-    footer {
-      margin-top: 50px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    footer span {
-      font-family: var(--mono);
-    }
-
-    /* RESPONSIVE -------------------------------------------------------- */
-    @media (max-width: 960px) {
-      .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-
-      .hero-left-label,
-      .hero-right-label {
-        text-align: center;
-      }
-
-      .hero-sub,
-      .hero-sub.right {
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-      }
-
-      .hero-center {
-        order: -1;
-      }
-
-      .hero {
-        padding: 30px 26px 34px;
-      }
-
-      .work-grid,
-      .blog-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .top-bar {
-        padding: 12px 18px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .nav-links {
-        gap: 16px;
-      }
-
-      .hero {
-        padding: 26px 20px 32px;
-      }
-
-      .avatar-circle {
-        width: 170px;
-        height: 170px;
-      }
-
-      .work-grid,
-      .blog-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>the signal, distilled.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            /* DARK MODE PRIMARY */
+            --bg-page: #0e1217;
+            --bg-card: #181d26;
+            --bg-sidebar: #11151c;
+            --text-main: #f0f4f8;
+            --text-muted: #8893a7;
+            --text-kicker: #4f46e5;
+            /* ACCENT */
+            --accent: #4f46e5;
+            --accent-soft: rgba(79, 70, 229, 0.15);
+            --border-subtle: #2d3748;
+            --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.4);
+            --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--sans);
+            color: var(--text-main);
+            background: var(--bg-page);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        /* MAIN LAYOUT ---------------------------------------------------- */
+        .container {
+            display: grid;
+            grid-template-columns: 240px minmax(0, 1fr);
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-subtle);
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 30px;
+            font-size: 0.9rem;
+        }
+
+        .content {
+            padding: 40px 50px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* SIDEBAR COMPONENTS */
+        .identity {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 999px;
+            border: 2px solid var(--accent);
+            padding: 2px;
+            overflow: hidden;
+        }
+
+        .avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 999px;
+            background: #2d3748;
+        }
+
+        .identity h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        .identity p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.88rem;
+            text-transform: lowercase;
+            width: 100%;
+        }
+
+        .nav-links a {
+            padding: 6px 0;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: color 0.15s ease, background 0.15s ease;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: "→";
+            margin-right: 8px;
+            font-weight: 400;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .nav-links a:hover::before {
+            opacity: 1;
+        }
+
+        .social-links {
+            margin-top: auto;
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-links a {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        /* CONTENT SECTIONS ---------------------------------------------------- */
+        .section {
+            padding-top: 50px;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 50px;
+        }
+
+        .section:first-of-type {
+            border-top: none;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .section-header {
+            margin-bottom: 24px;
+        }
+
+        .section-kicker {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-kicker);
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 6px 0 0;
+            letter-spacing: -0.02em;
+        }
+
+        /* HERO / INTRO */
+        .hero-intro {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-top: 15px;
+            color: var(--text-muted);
+        }
+
+        .hero-intro strong {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* WORK GRID --------------------------------------------------------- */
+        .work-grid,
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: border-color 0.15s ease, transform 0.1s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .card-thumb {
+            border-radius: 8px;
+            overflow: hidden;
+            background: #374151;
+            height: 140px;
+        }
+
+        .card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .card-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .card-tag {
+            margin-top: 2px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* BLOG / PDF CARDS -------------------------------------------------- */
+        .blog-card {
+            cursor: pointer;
+        }
+
+        .blog-card .card-title {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .blog-card .card-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: -6px;
+        }
+
+        .pdf-pill {
+            font-size: 0.7rem;
+            font-family: var(--mono);
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        /* CONTACT STRIP ------------------------------------------------------ */
+        .contact-strip {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-top: 20px;
+            color: var(--text-muted);
+        }
+
+        .contact-strip a {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* FOOTER ------------------------------------------------------------ */
+        footer {
+            margin-top: 50px;
+            font-size: 0.75rem;
+            color: #4b5563;
+            text-align: center;
+        }
+
+        footer span {
+            font-family: var(--mono);
+        }
+
+        /* PDF MODAL (Same as original, simplified styles) -------------------- */
+        .pdf-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 50;
+        }
+
+        .pdf-modal.open {
+            display: flex;
+        }
+
+        .pdf-modal-inner {
+            max-width: 960px;
+            width: 100%;
+            max-height: 90vh;
+            background: var(--bg-sidebar);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-modal-header {
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #020617;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .pdf-modal-header button {
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .pdf-frame-wrap {
+            flex: 1;
+            background: var(--bg-page);
+        }
+
+        .pdf-frame-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* RESPONSIVE -------------------------------------------------------- */
+        @media (max-width: 960px) {
+            .container {
+                grid-template-columns: 1fr; /* Stack layout on smaller screens */
+            }
+
+            .sidebar {
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-subtle);
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 24px;
+            }
+
+            .identity {
+                flex-direction: row;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .avatar-circle {
+                width: 50px;
+                height: 50px;
+            }
+
+            .identity h1 {
+                font-size: 1.1rem;
+            }
+
+            .identity p {
+                display: none; /* Hide tagline on mobile sidebar */
+            }
+
+            .nav-links,
+            .social-links {
+                display: none; /* Hide navigation and social links from top bar on mobile */
+            }
+
+            .content {
+                padding: 30px 20px 60px;
+            }
+
+            .work-grid,
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- TOP NAV -->
-  <header class="top-bar">
-    <div class="top-left">
-      <div class="logo-circle">DC</div>
-      <nav class="nav-links">
-        <a href="#about">about</a>
-        <a href="#work">work</a>
-        <a href="#blog">blog</a>
-        <a href="#contact">contact</a>
-      </nav>
-    </div>
-    <div class="top-right">
-      <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub">G</a>
-      <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">in</a>
-      <a href="mailto:you@example.com" aria-label="Email">@</a>
-    </div>
-  </header>
-
-  <main class="page">
-    <!-- HERO -->
-    <section class="hero" id="about">
-      <div class="hero-inner">
-        <!-- Left: "designer"-like side -->
-        <div class="hero-column">
-          <div class="hero-left-label">ai strategist</div>
-          <div class="hero-sub">
-            thinking in systems, constraints, and long-term leverage.
-          </div>
-          <div class="typing-label">focus</div>
-          <div class="typing-line" id="leftTyping"></div>
-        </div>
-
-        <!-- Center portrait -->
-        <div class="hero-center">
-          <div class="avatar-circle">
-            <div class="avatar-inner">
-              <!-- Replace portrait.jpg with your actual image filename -->
-              <img src="portrait.jpg" alt="portrait of Dimitrios">
+    <div class="container">
+        <header class="sidebar">
+            <div class="identity">
+                <div class="avatar-circle">
+                    <div class="avatar-inner">
+                        <img src="portrait.jpg" alt="portrait of Dimitrios">
+                    </div>
+                </div>
+                <div>
+                    <h1>Dimitrios C.</h1>
+                    <p>AI Strategist & Product Builder</p>
+                </div>
             </div>
-          </div>
-          <div class="hero-tagline">
-            after all, that's me — the signal, distilled.
-          </div>
-        </div>
 
-        <!-- Right: "coder"-like side -->
-        <div class="hero-column">
-          <div class="hero-right-label">&lt;product&nbsp;builder&gt;</div>
-          <div class="hero-sub right">
-            building intelligent, human-centered systems in 0s &amp; 1s.
-          </div>
-          <div class="typing-label" style="text-align:right;">currently</div>
-          <div class="typing-line" id="rightTyping" style="margin-left:auto;"></div>
-        </div>
-      </div>
-    </section>
+            <nav class="nav-links">
+                <a href="#intro">/ &nbsp; intro</a>
+                <a href="#work">/ &nbsp; work</a>
+                <a href="#writing">/ &nbsp; writing</a>
+                <a href="#contact">/ &nbsp; contact</a>
+            </nav>
 
-    <!-- ABOUT STRIP -->
-    <section class="about-strip">
-      i <strong>read, learn, build, and interact with intention</strong>. i care about systems that think, products that
-      feel inevitable, and architectures that make complexity quiet.
-    </section>
+            <div class="social-links">
+                <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub">G</a>
+                <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">in</a>
+                <a href="mailto:you@example.com" aria-label="Email">@</a>
+            </div>
+        </header>
 
-    <!-- LATEST WORK -->
-    <section class="section" id="work">
-      <div class="section-header">
-        <div class="section-kicker">some of my latest work</div>
-        <h2 class="section-title">selected systems & experiments</h2>
-      </div>
+        <main class="content">
 
-      <div class="work-grid">
-        <article class="card">
-          <div class="card-thumb">
-            <!-- replace thumb images as you like -->
-            <img src="thumb-roshambo.jpg" alt="RoShamBo opponent modeling visualization">
-          </div>
-          <div class="card-title">opponent modeling in roshambo</div>
-          <div class="card-sub">game theory, markov chains, no-regret algorithms.</div>
-          <div class="card-tag">research · ml</div>
-        </article>
+            <section id="intro">
+                <div class="section-kicker">the signal, distilled.</div>
+                <h2 class="section-title">Architecting systems that think.</h2>
+                <p class="hero-intro">
+                    I **read, learn, build, and interact with intention**. My focus is on turning ambiguous problem spaces into **inevitable, intelligent products**. I specialize in **AI strategy**, agentic systems, and building high-leverage products from first principles.
+                </p>
+            </section>
 
-        <article class="card">
-          <div class="card-thumb">
-            <img src="thumb-agents.jpg" alt="abstract representation of AI agents">
-          </div>
-          <div class="card-title">agentic workflows</div>
-          <div class="card-sub">tool-using LLMs, reasoning, and self-improving loops.</div>
-          <div class="card-tag">ai systems</div>
-        </article>
+            <section class="section" id="work">
+                <div class="section-header">
+                    <div class="section-kicker">selected systems & experiments</div>
+                    <h2 class="section-title">Projects.</h2>
+                </div>
 
-        <article class="card">
-          <div class="card-thumb">
-            <img src="thumb-product.jpg" alt="product architecture sketch">
-          </div>
-          <div class="card-title">product & architecture notes</div>
-          <div class="card-sub">turning ambiguous problem spaces into shippable systems.</div>
-          <div class="card-tag">product · architecture</div>
-        </article>
-      </div>
-    </section>
+                <div class="work-grid">
+                    <article class="card">
+                        <div class="card-thumb">
+                            <img src="thumb-roshambo.jpg" alt="RoShamBo opponent modeling visualization">
+                        </div>
+                        <div class="card-title">Opponent Modeling in RoShamBo</div>
+                        <div class="card-sub">Exploration of game theory, Markov chains, and no-regret algorithms for building robust non-equilibrium strategies.</div>
+                        <div class="card-tag">Research · ML</div>
+                    </article>
 
-    <!-- BLOG / PDF SECTION -->
-    <section class="section" id="blog">
-      <div class="section-header">
-        <div class="section-kicker">writing & papers</div>
-        <h2 class="section-title">blog, but make it pdf-native</h2>
-      </div>
+                    <article class="card">
+                        <div class="card-thumb">
+                            <img src="thumb-agents.jpg" alt="abstract representation of AI agents">
+                        </div>
+                        <div class="card-title">Agentic Workflow Architectures</div>
+                        <div class="card-sub">Designing self-improving, tool-using LLM systems with code-first workflows for maximal context efficiency.</div>
+                        <div class="card-tag">AI Systems · Product</div>
+                    </article>
 
-      <div class="blog-grid">
-        <!-- BLOG CARD EXAMPLE 1 -->
-        <article class="card blog-card" data-pdf="CSC_370_HW_3.pdf" data-title="Opponent Modeling in RoShamBo">
-          <div class="card-title">
-            <span>Opponent Modeling in RoShamBo</span>
-            <span class="pdf-pill">PDF</span>
-          </div>
-          <div class="card-meta">game theory · opponent modelling · rps</div>
-          <div class="card-sub">
-            exploring non-equilibrium strategies with markov models & no-regret learning.
-          </div>
-        </article>
+                    <article class="card">
+                        <div class="card-thumb">
+                            <img src="thumb-product.jpg" alt="product architecture sketch">
+                        </div>
+                        <div class="card-title">Product & Architecture Notes</div>
+                        <div class="card-sub">Frameworks and blueprints for turning complex, high-ambiguity problems into shippable, scalable systems.</div>
+                        <div class="card-tag">Product · Architecture</div>
+                    </article>
 
-        <!-- BLOG CARD EXAMPLE 2 -->
-        <article class="card blog-card" data-pdf="ai_agents_notes.pdf" data-title="Notes on Agentic Systems">
-          <div class="card-title">
-            <span>Notes on Agentic Systems</span>
-            <span class="pdf-pill">PDF</span>
-          </div>
-          <div class="card-meta">llms · tools · orchestration</div>
-          <div class="card-sub">
-            thoughts on moving from “chatbots” to serious, tool-using systems with memory.
-          </div>
-        </article>
+                    <article class="card">
+                        <div class="card-thumb">
+                            <img src="thumb-data.jpg" alt="data visualization chart">
+                        </div>
+                        <div class="card-title">High-Dimensional Data Visualization</div>
+                        <div class="card-sub">Experiments in effective information transfer and rendering for complex data sets where every dimension matters.</div>
+                        <div class="card-tag">Data Viz · UX</div>
+                    </article>
+                </div>
+            </section>
 
-        <!-- BLOG CARD EXAMPLE 3 -->
-        <article class="card blog-card" data-pdf="product_frameworks.pdf" data-title="Product Frameworks for Hard Problems">
-          <div class="card-title">
-            <span>Product Frameworks for Hard Problems</span>
-            <span class="pdf-pill">PDF</span>
-          </div>
-          <div class="card-meta">product · strategy</div>
-          <div class="card-sub">
-            frameworks for navigating ambiguity, constraints, and real-world trade-offs.
-          </div>
-        </article>
-      </div>
-    </section>
+            <section class="section" id="writing">
+                <div class="section-header">
+                    <div class="section-kicker">papers & perspectives</div>
+                    <h2 class="section-title">Writing.</h2>
+                </div>
 
-    <!-- CONTACT -->
-    <section class="section" id="contact">
-      <div class="section-header">
-        <div class="section-kicker">contact</div>
-        <h2 class="section-title">where to find me</h2>
-      </div>
-      <div class="about-strip">
-        based in <strong>charlotte, nc</strong>. open to remote / hybrid roles where ai, product, and systems thinking
-        actually matter.
-        <br /><br />
-        email: <strong><a href="mailto:you@example.com">you@example.com</a></strong> · github:
-        <strong><a href="https://github.com/yourusername" target="_blank">yourusername</a></strong> · linkedin:
-        <strong><a href="https://linkedin.com/in/yourprofile" target="_blank">yourprofile</a></strong>
-      </div>
-    </section>
+                <div class="blog-grid">
+                    <article class="card blog-card" data-pdf="CSC_370_HW_3.pdf" data-title="Opponent Modeling in RoShamBo">
+                        <div class="card-title">
+                            <span>Opponent Modeling in RoShamBo</span>
+                            <span class="pdf-pill">PDF</span>
+                        </div>
+                        <div class="card-meta">game theory · rps</div>
+                        <div class="card-sub">Exploring non-equilibrium strategies with markov models and no-regret learning.</div>
+                    </article>
 
-    <footer>
-      <p><span>this page was written in plaintext, rendered in 0s &amp; 1s.</span></p>
-    </footer>
-  </main>
+                    <article class="card blog-card" data-pdf="ai_agents_notes.pdf" data-title="Notes on Agentic Systems">
+                        <div class="card-title">
+                            <span>Notes on Agentic Systems</span>
+                            <span class="pdf-pill">PDF</span>
+                        </div>
+                        <div class="card-meta">llms · orchestration</div>
+                        <div class="card-sub">Thoughts on moving from "chatbots" to serious, tool-using systems with memory.</div>
+                    </article>
 
-  <!-- PDF MODAL -->
-  <div class="pdf-modal" id="pdfModal" aria-hidden="true">
-    <div class="pdf-modal-inner">
-      <div class="pdf-modal-header">
-        <span id="pdfTitle">Document</span>
-        <button type="button" id="pdfClose" aria-label="Close PDF">×</button>
-      </div>
-      <div class="pdf-frame-wrap">
-        <iframe id="pdfFrame" src="" title="PDF viewer"></iframe>
-      </div>
+                    <article class="card blog-card" data-pdf="product_frameworks.pdf" data-title="Product Frameworks for Hard Problems">
+                        <div class="card-title">
+                            <span>Product Frameworks for Hard Problems</span>
+                            <span class="pdf-pill">PDF</span>
+                        </div>
+                        <div class="card-meta">product · strategy</div>
+                        <div class="card-sub">Frameworks for navigating ambiguity, constraints, and real-world trade-offs in new product development.</div>
+                    </article>
+
+                    <article class="card blog-card" data-pdf="system_design.pdf" data-title="Making Complexity Quiet">
+                        <div class="card-title">
+                            <span>Making Complexity Quiet</span>
+                            <span class="pdf-pill">PDF</span>
+                        </div>
+                        <div class="card-meta">architecture · strategy</div>
+                        <div class="card-sub">A perspective on architectural choices that minimize cognitive load and maximize long-term leverage.</div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section" id="contact">
+                <div class="section-header">
+                    <div class="section-kicker">get in touch</div>
+                    <h2 class="section-title">Contact.</h2>
+                </div>
+                <div class="contact-strip">
+                    Based in **Charlotte, NC**. Always open to remote/hybrid opportunities where AI, product, and deep systems thinking are central to the mission.
+                    <br /><br />
+                    **Email:** <a href="mailto:you@example.com">you@example.com</a> · **GitHub:** <a href="https://github.com/yourusername" target="_blank">yourusername</a> · **LinkedIn:** <a href="https://linkedin.com/in/yourprofile" target="_blank">yourprofile</a>
+                </div>
+            </section>
+
+            <footer>
+                <p><span>// this page was written in plaintext, rendered in 0s &amp; 1s.</span></p>
+            </footer>
+        </main>
     </div>
-  </div>
 
-  <script>
-    // Typing effects for left & right
-    const leftPhrases = [
-      "systems, not features",
-      "constraints as a design tool",
-      "long-horizon thinking"
-    ];
+    <div class="pdf-modal" id="pdfModal" aria-hidden="true">
+        <div class="pdf-modal-inner">
+            <div class="pdf-modal-header">
+                <span id="pdfTitle">Document</span>
+                <button type="button" id="pdfClose" aria-label="Close PDF">×</button>
+            </div>
+            <div class="pdf-frame-wrap">
+                <iframe id="pdfFrame" src="" title="PDF viewer"></iframe>
+            </div>
+        </div>
+    </div>
 
-    const rightPhrases = [
-      "shipping real things",
-      "making complexity quiet",
-      "building with intention"
-    ];
+    <script>
+        // PDF modal logic (Simplified and cleaned up)
+        const modal = document.getElementById("pdfModal");
+        const pdfFrame = document.getElementById("pdfFrame");
+        const pdfTitle = document.getElementById("pdfTitle");
+        const closeBtn = document.getElementById("pdfClose");
 
-    function createTyper(el, phrases, typingSpeed = 75, deleteSpeed = 40, pause = 900) {
-      let phraseIndex = 0;
-      let charIndex = 0;
-      let deleting = false;
-
-      function step() {
-        const phrase = phrases[phraseIndex];
-
-        if (!deleting) {
-          charIndex++;
-          el.textContent = phrase.slice(0, charIndex);
-          if (charIndex === phrase.length) {
-            deleting = true;
-            setTimeout(step, pause);
-            return;
-          }
-        } else {
-          charIndex--;
-          el.textContent = phrase.slice(0, charIndex);
-          if (charIndex === 0) {
-            deleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-          }
+        function openPdf(src, title) {
+            pdfFrame.src = src;
+            pdfTitle.textContent = title || "Document";
+            modal.classList.add("open");
+            modal.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = 'hidden'; // Prevent scrolling underneath
         }
 
-        setTimeout(step, deleting ? deleteSpeed : typingSpeed);
-      }
-
-      step();
-    }
-
-    const leftEl = document.getElementById("leftTyping");
-    const rightEl = document.getElementById("rightTyping");
-    if (leftEl) createTyper(leftEl, leftPhrases);
-    if (rightEl) createTyper(rightEl, rightPhrases, 80, 45, 1000);
-
-    // PDF modal logic
-    const modal = document.getElementById("pdfModal");
-    const pdfFrame = document.getElementById("pdfFrame");
-    const pdfTitle = document.getElementById("pdfTitle");
-    const closeBtn = document.getElementById("pdfClose");
-
-    function openPdf(src, title) {
-      pdfFrame.src = src;
-      pdfTitle.textContent = title || "Document";
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
-    }
-
-    function closePdf() {
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden", "true");
-      pdfFrame.src = "";
-    }
-
-    document.querySelectorAll(".blog-card").forEach(card => {
-      card.addEventListener("click", () => {
-        const src = card.getAttribute("data-pdf");
-        const title = card.getAttribute("data-title");
-        if (src) {
-          openPdf(src, title);
+        function closePdf() {
+            modal.classList.remove("open");
+            modal.setAttribute("aria-hidden", "true");
+            pdfFrame.src = "";
+            document.body.style.overflow = '';
         }
-      });
-    });
 
-    closeBtn.addEventListener("click", closePdf);
-    modal.addEventListener("click", e => {
-      if (e.target === modal) closePdf();
-    });
+        document.querySelectorAll(".blog-card").forEach(card => {
+            card.addEventListener("click", () => {
+                const src = card.getAttribute("data-pdf");
+                const title = card.getAttribute("data-title");
+                if (src) {
+                    openPdf(src, title);
+                }
+            });
+        });
 
-    document.addEventListener("keydown", e => {
-      if (e.key === "Escape" && modal.classList.contains("open")) {
-        closePdf();
-      }
-    });
-  </script>
+        closeBtn.addEventListener("click", closePdf);
+        modal.addEventListener("click", e => {
+            if (e.target === modal) closePdf();
+        });
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape" && modal.classList.contains("open")) {
+                closePdf();
+            }
+        });
+    </script>
 </body>
 </html>
