@@ -6,20 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg: #02040a;
-      --bg-elevated: #070b14;
-      --bg-soft: #0b101d;
-      --border-subtle: #1c2230;
-      --text: #f9fafb;
-      --muted: #9ca3af;
-      --accent: #7c3aed;
-      --accent-soft: rgba(124, 58, 237, 0.14);
-      --accent-2: #22d3ee;
-      --shadow-soft: 0 30px 80px rgba(0, 0, 0, 0.8);
-      --radius-lg: 18px;
-      --radius-md: 12px;
+      --bg-page: #f5f6f8;
+      --bg-hero: #ffffff;
+      --bg-dark: #050608;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent: #4f46e5;
+      --accent-soft: #e0e7ff;
+      --border-subtle: #e5e7eb;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.14);
       --sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
-      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
     * {
@@ -29,756 +27,766 @@
     body {
       margin: 0;
       font-family: var(--sans);
-      background:
-        radial-gradient(circle at top, #111827 0, #02040a 55%) fixed,
-        #02040a;
-      color: var(--text);
+      color: var(--text-main);
+      background: var(--bg-page);
       -webkit-font-smoothing: antialiased;
     }
 
     a {
       color: inherit;
+      text-decoration: none;
     }
 
-    .page {
-      min-height: 100vh;
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 24px 16px 72px;
+    img {
+      max-width: 100%;
+      display: block;
     }
 
-    .frame {
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.97), rgba(3, 7, 18, 0.97));
-      border-radius: 30px;
-      border: 1px solid rgba(148, 163, 184, 0.2);
-      box-shadow: var(--shadow-soft);
-      padding: 20px 22px 30px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .frame::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 5% 0%, rgba(56, 189, 248, 0.12) 0, transparent 50%),
-        radial-gradient(circle at 95% 10%, rgba(124, 58, 237, 0.22) 0, transparent 55%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .frame-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* NAVBAR */
-    .nav {
+    /* TOP BAR ------------------------------------------------------------ */
+    .top-bar {
+      background: var(--bg-dark);
+      color: #f9fafb;
+      padding: 14px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
     }
 
-    .nav-left {
+    .top-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .brand-mark {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      background: radial-gradient(circle at 30% 0, #22d3ee 0, transparent 55%),
-                  radial-gradient(circle at 70% 100%, #7c3aed 0, transparent 55%);
-      border: 1px solid rgba(148, 163, 184, 0.7);
+    .logo-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 2px solid #f9fafb;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--mono);
-      font-size: 0.78rem;
-      color: #e5e7eb;
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-text .title {
       font-size: 0.9rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .brand-text .subtitle {
-      font-size: 0.72rem;
-      color: var(--muted);
-      opacity: 0.8;
+      font-weight: 500;
     }
 
     .nav-links {
       display: flex;
-      gap: 14px;
-      font-size: 0.8rem;
-      color: var(--muted);
+      gap: 24px;
+      font-size: 0.88rem;
+      text-transform: lowercase;
     }
 
     .nav-links a {
-      text-decoration: none;
-      padding-bottom: 2px;
-      border-bottom: 1px solid transparent;
+      position: relative;
+      padding-bottom: 3px;
     }
 
-    .nav-links a:hover {
-      border-bottom-color: rgba(148, 163, 184, 0.7);
-      color: var(--text);
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 1px;
+      width: 0;
+      background: linear-gradient(90deg, #38bdf8, #a855f7);
+      transition: width 0.18s ease;
     }
 
-    /* HERO */
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
-      gap: 24px;
-      padding: 18px 0 26px;
-      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    .nav-links a:hover::after {
+      width: 100%;
     }
 
-    .hero-main {
+    .top-right {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      gap: 14px;
+      font-size: 0.85rem;
     }
 
-    .kicker {
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-
-    .hero-title {
-      font-size: 2.1rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      margin: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-    }
-
-    .hero-title span.accent {
-      background: linear-gradient(135deg, #a855f7, #22d3ee);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero-role {
-      font-size: 0.98rem;
-      color: var(--muted);
-    }
-
-    .hero-typing {
-      margin-top: 4px;
-      font-size: 0.86rem;
-      font-family: var(--mono);
-      color: #e5e7eb;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .hero-typing-label {
-      color: var(--muted);
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-    }
-
-    .typing-text {
-      min-height: 1.2em;
-      border-right: 1px solid #e5e7eb;
-      padding-right: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-
-    .hero-actions {
-      margin-top: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      font-size: 0.84rem;
-    }
-
-    .btn {
+    .top-right a {
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
-      padding: 6px 13px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: rgba(15, 23, 42, 0.95);
-      display: inline-flex;
+      border: 1px solid rgba(249, 250, 251, 0.5);
+      display: flex;
       align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      text-decoration: none;
-      color: var(--text);
-      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+      justify-content: center;
+      transition: background 0.15s ease, transform 0.1s ease;
     }
 
-    .btn-primary {
-      background: radial-gradient(circle at 20% 0, #22d3ee 0, transparent 55%),
-                  linear-gradient(135deg, #4f46e5, #7c3aed);
-      border-color: rgba(191, 219, 254, 0.9);
-    }
-
-    .btn:hover {
+    .top-right a:hover {
+      background: rgba(249, 250, 251, 0.12);
       transform: translateY(-1px);
-      border-color: rgba(209, 213, 219, 0.9);
-      background-color: rgba(15, 23, 42, 0.9);
     }
 
-    .btn-primary:hover {
-      filter: brightness(1.05);
+    /* PAGE WRAPPER ------------------------------------------------------ */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 22px 80px;
     }
 
-    .hero-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: flex-end;
-      text-align: right;
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 5px 12px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.5);
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.4);
-    }
-
-    .meta-block {
-      background: rgba(15, 23, 42, 0.9);
-      border-radius: 12px;
-      padding: 8px 10px;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      min-width: 210px;
-    }
-
-    .meta-block div {
-      margin-bottom: 2px;
-    }
-
-    .meta-label {
-      text-transform: uppercase;
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      color: var(--muted);
-    }
-
-    .meta-value {
-      font-size: 0.82rem;
-      color: #e5e7eb;
-    }
-
-    /* LAYOUT: MAIN CONTENT */
-    .grid {
+    /* HERO --------------------------------------------------------------- */
+    .hero {
+      background: var(--bg-hero);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 40px 50px 46px;
       display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 18px;
-      margin-top: 24px;
-    }
-
-    section.card {
-      background: var(--bg-elevated);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      padding: 14px 16px 16px;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 32px;
       position: relative;
       overflow: hidden;
     }
 
-    section.card::before {
+    .hero::before {
       content: "";
       position: absolute;
-      inset: -20%;
-      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18) 0, transparent 55%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0 0, rgba(79, 70, 229, 0.08) 0, transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(56, 189, 248, 0.08) 0, transparent 55%);
       pointer-events: none;
+      opacity: 0.8;
     }
 
-    section.card:hover::before {
-      opacity: 1;
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: contents;
     }
 
-    .section-label {
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 0.74rem;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .section-title {
-      font-size: 1rem;
-      margin: 0 0 12px;
-      color: #e5e7eb;
-    }
-
-    .section-body {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .mono-tag {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      background: var(--accent-soft);
-      border-radius: 999px;
-      padding: 4px 8px;
-      border: 1px solid rgba(129, 140, 248, 0.6);
-      color: #e5e7eb;
-      margin-bottom: 8px;
-    }
-
-    /* PUBLICATIONS & PROJECTS */
-    .list {
-      margin: 4px 0 0;
-      padding: 0;
-      list-style: none;
+    .hero-column {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-    }
-
-    .list-item {
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      background: var(--bg-soft);
-      padding: 8px 10px;
-      font-size: 0.86rem;
-    }
-
-    .list-item-header {
-      display: flex;
-      justify-content: space-between;
       gap: 8px;
+    }
+
+    .hero-left-label {
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-right-label {
+      font-size: 2.2rem;
+      font-weight: 600;
+      text-align: right;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-sub {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-width: 260px;
+    }
+
+    .hero-sub.right {
+      text-align: right;
+      margin-left: auto;
+    }
+
+    .typing-line {
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 1px solid rgba(79, 70, 229, 0.8);
+      padding-right: 3px;
+      min-height: 1.1em;
+    }
+
+    .typing-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
       margin-bottom: 2px;
     }
 
-    .list-item-title {
+    .hero-center {
+      justify-self: center;
+    }
+
+    .avatar-circle {
+      width: 210px;
+      height: 210px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #e5e7eb 0, #d1d5db 22%, #9ca3af 70%);
+      padding: 6px;
+      position: relative;
+    }
+
+    .avatar-circle::after {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      pointer-events: none;
+    }
+
+    .avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #111827;
+    }
+
+    .avatar-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-tagline {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* SECTION WRAPPERS -------------------------------------------------- */
+    .section {
+      margin-top: 50px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .section-kicker {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+    }
+
+    .section-title {
+      margin-top: 6px;
+      font-size: 1.2rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* WORK GRID --------------------------------------------------------- */
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      padding: 16px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+      border-color: rgba(79, 70, 229, 0.3);
+    }
+
+    .card-thumb {
+      border-radius: 12px;
+      overflow: hidden;
+      background: #e5e7eb;
+      height: 120px;
+    }
+
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-title {
+      font-size: 0.96rem;
       font-weight: 500;
-      color: #e5e7eb;
     }
 
-    .list-item-meta {
-      font-size: 0.76rem;
-      color: var(--muted);
+    .card-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
-    .list-item-body {
-      font-size: 0.82rem;
-      color: var(--muted);
+    .card-tag {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    /* BLOG / PDF CARDS -------------------------------------------------- */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .blog-card {
+      cursor: pointer;
+    }
+
+    .blog-card .card-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
       margin-top: 2px;
     }
 
-    .list-item a {
-      font-size: 0.8rem;
-      color: #a5b4fc;
-      text-decoration: none;
+    .blog-card .card-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: center;
     }
 
-    .list-item a:hover {
-      text-decoration: underline;
+    .pdf-pill {
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
     }
 
-    /* BOOKS & PRINCIPLES */
-    .stacked {
+    /* PDF MODAL --------------------------------------------------------- */
+    .pdf-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.76);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+
+    .pdf-modal.open {
+      display: flex;
+    }
+
+    .pdf-modal-inner {
+      max-width: 960px;
+      width: 100%;
+      max-height: 90vh;
+      background: #0b1120;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-top: 6px;
     }
 
-    .stacked p {
-      margin: 0;
-      font-size: 0.86rem;
+    .pdf-modal-header {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.9rem;
     }
 
-    .stacked strong {
+    .pdf-modal-header button {
+      border: none;
+      background: transparent;
+      color: #9ca3af;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .pdf-modal-header button:hover {
       color: #e5e7eb;
     }
 
-    .stacked span.note {
-      color: var(--muted);
+    .pdf-frame-wrap {
+      flex: 1;
+      background: #030712;
     }
 
-    .principles p {
-      margin: 0 0 4px;
-      font-size: 0.86rem;
+    .pdf-frame-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
-    .principles p:last-child {
-      margin-bottom: 0;
+    /* ABOUT TEXT STRIP -------------------------------------------------- */
+    .about-strip {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .bullet {
-      color: var(--accent);
-      margin-right: 6px;
-    }
-
-    /* CONTACT / FOOTER */
-    .footer-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 18px;
-      margin-top: 18px;
-    }
-
-    .contact-info p {
-      margin: 0 0 3px;
-      font-size: 0.86rem;
-      color: var(--muted);
-    }
-
-    .contact-info strong {
-      color: var(--text);
+    .about-strip strong {
+      color: var(--text-main);
       font-weight: 500;
     }
 
-    .footer-note {
-      text-align: right;
-      font-size: 0.74rem;
-      color: var(--muted);
+    /* FOOTER ------------------------------------------------------------ */
+    footer {
+      margin-top: 50px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    footer span {
       font-family: var(--mono);
     }
 
-    /* ANIMATIONS: SCROLL FADE */
-    .fade-section {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-
-    .fade-section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 880px) {
+    /* RESPONSIVE -------------------------------------------------------- */
+    @media (max-width: 960px) {
       .hero {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: 1fr;
+        text-align: center;
       }
 
-      .hero-meta {
-        align-items: flex-start;
-        text-align: left;
+      .hero-left-label,
+      .hero-right-label {
+        text-align: center;
       }
 
-      .grid {
-        grid-template-columns: minmax(0, 1fr);
+      .hero-sub,
+      .hero-sub.right {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
       }
 
-      .footer-row {
-        grid-template-columns: minmax(0, 1fr);
+      .hero-center {
+        order: -1;
       }
 
-      .footer-note {
-        text-align: left;
-        margin-top: 4px;
+      .hero {
+        padding: 30px 26px 34px;
+      }
+
+      .work-grid,
+      .blog-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .top-bar {
+        padding: 12px 18px;
       }
     }
 
-    @media (max-width: 520px) {
-      .frame {
-        padding: 16px 14px 22px;
-        border-radius: 22px;
+    @media (max-width: 640px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
       }
 
-      .hero-title {
-        font-size: 1.7rem;
+      .nav-links {
+        gap: 16px;
+      }
+
+      .hero {
+        padding: 26px 20px 32px;
+      }
+
+      .avatar-circle {
+        width: 170px;
+        height: 170px;
+      }
+
+      .work-grid,
+      .blog-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="frame">
-      <div class="frame-inner">
-        <!-- NAV -->
-        <nav class="nav">
-          <div class="nav-left">
-            <div class="brand-mark">DC</div>
-            <div class="brand-text">
-              <div class="title">SIGNAL</div>
-              <div class="subtitle">ai · product · systems</div>
-            </div>
-          </div>
-          <div class="nav-links">
-            <a href="#about">about</a>
-            <a href="#publications">publications</a>
-            <a href="#projects">projects</a>
-            <a href="#principles">principles</a>
-            <a href="#contact">contact</a>
-          </div>
-        </nav>
+  <!-- TOP NAV -->
+  <header class="top-bar">
+    <div class="top-left">
+      <div class="logo-circle">DC</div>
+      <nav class="nav-links">
+        <a href="#about">about</a>
+        <a href="#work">work</a>
+        <a href="#blog">blog</a>
+        <a href="#contact">contact</a>
+      </nav>
+    </div>
+    <div class="top-right">
+      <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub">G</a>
+      <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">in</a>
+      <a href="mailto:you@example.com" aria-label="Email">@</a>
+    </div>
+  </header>
 
-        <!-- HERO -->
-        <header class="hero">
-          <div class="hero-main fade-section">
-            <div class="kicker">after all, that's me</div>
-            <h1 class="hero-title">
-              ✦ <span class="accent">the signal, distilled.</span>
-            </h1>
-            <p class="hero-role">
-              ai strategist • product manager — building systems that think, not just react.
-            </p>
-            <div class="hero-typing">
-              <span class="hero-typing-label">roles</span>
-              <span class="typing-text" id="typing"></span>
-            </div>
-            <div class="hero-actions">
-              <a class="btn btn-primary" href="https://github.com/yourusername" target="_blank">github</a>
-              <a class="btn" href="https://linkedin.com/in/yourprofile" target="_blank">linkedin</a>
-              <a class="btn" href="mailto:you@example.com">email</a>
-              <a class="btn" href="cv.pdf" target="_blank">cv / resume</a>
-            </div>
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero" id="about">
+      <div class="hero-inner">
+        <!-- Left: "designer"-like side -->
+        <div class="hero-column">
+          <div class="hero-left-label">ai strategist</div>
+          <div class="hero-sub">
+            thinking in systems, constraints, and long-term leverage.
           </div>
-
-          <div class="hero-meta fade-section">
-            <div class="status-pill">
-              <span class="status-dot"></span>
-              <span>actively reading, learning, building on purpose</span>
-            </div>
-            <div class="meta-block">
-              <div class="meta-label">location</div>
-              <div class="meta-value">charlotte, nc · remote friendly</div>
-            </div>
-            <div class="meta-block">
-              <div class="meta-label">focus</div>
-              <div class="meta-value">ai systems · agentic workflows · product architecture</div>
-            </div>
-          </div>
-        </header>
-
-        <!-- MAIN GRID -->
-        <div class="grid">
-          <!-- ABOUT -->
-          <section id="about" class="card fade-section">
-            <div class="section-label">section 01 · about</div>
-            <h2 class="section-title">who i am, in plaintext</h2>
-            <div class="section-body">
-              <p>
-                i like building systems that have opinions — about data, about decisions, about how work should flow.
-                i live at the intersection of ai, product, and systems design: part strategist, part builder, part
-                debugger of how people and tools interact.
-              </p>
-              <p>
-                i care about clarity, architecture, and making complex things feel inevitable rather than overwhelming.
-                i read deeply, learn deliberately, and treat every project as a way to refactor how i think.
-              </p>
-            </div>
-          </section>
-
-          <!-- PUBLICATIONS -->
-          <section id="publications" class="card fade-section">
-            <div class="section-label">section 02 · publications</div>
-            <h2 class="section-title">papers & writing</h2>
-            <ul class="list">
-              <li class="list-item">
-                <div class="list-item-header">
-                  <div class="list-item-title">Opponent Modeling in RoShamBo</div>
-                  <div class="list-item-meta">game theory · opponent modelling · rpsls</div>
-                </div>
-                <div class="list-item-body">
-                  explored markov chains, fictitious play, and no-regret learning to model non-equilibrium opponents in
-                  rock-paper-scissors-lizard-spock.
-                  <div><a href="CSC_370_HW_3.pdf" target="_blank">read the paper →</a></div>
-                </div>
-              </li>
-              <li class="list-item">
-                <div class="list-item-header">
-                  <div class="list-item-title">upcoming work</div>
-                  <div class="list-item-meta">ai systems · agents · decision layers</div>
-                </div>
-                <div class="list-item-body">
-                  space reserved for future essays & experiments on agentic workflows, constraint systems, and how humans
-                  collaborate with models.
-                </div>
-              </li>
-            </ul>
-          </section>
+          <div class="typing-label">focus</div>
+          <div class="typing-line" id="leftTyping"></div>
         </div>
 
-        <!-- SECOND GRID -->
-        <div class="grid">
-          <!-- PROJECTS -->
-          <section id="projects" class="card fade-section">
-            <div class="section-label">section 03 · projects</div>
-            <h2 class="section-title">systems i've been building</h2>
-            <ul class="list">
-              <li class="list-item">
-                <div class="list-item-header">
-                  <div class="list-item-title">ai agents & tool-using systems</div>
-                  <div class="list-item-meta">llms · orchestration · reasoning</div>
-                </div>
-                <div class="list-item-body">
-                  designing workflows where models don’t just predict, but call tools, write code, and maintain their own
-                  state — focused on robustness, not demos.
-                </div>
-              </li>
-              <li class="list-item">
-                <div class="list-item-header">
-                  <div class="list-item-title">data-driven decision engines</div>
-                  <div class="list-item-meta">pipelines · semantics · constraints</div>
-                </div>
-                <div class="list-item-body">
-                  building systems that classify, cluster, and organize data autonomously, reducing configuration and
-                  exposing clean abstractions to humans.
-                </div>
-              </li>
-              <li class="list-item">
-                <div class="list-item-header">
-                  <div class="list-item-title">product & architecture frameworks</div>
-                  <div class="list-item-meta">product thinking · design · execution</div>
-                </div>
-                <div class="list-item-body">
-                  frameworks for turning ambiguous problem spaces into shippable systems — balancing research,
-                  constraints, and real-world timelines.
-                </div>
-              </li>
-            </ul>
-          </section>
-
-          <!-- BOOKS -->
-          <section class="card fade-section">
-            <div class="section-label">section 04 · signal</div>
-            <h2 class="section-title">the ideas that built me</h2>
-            <div class="mono-tag">
-              📚 01110010‧01100101‧01100001‧01100100‧01110100‧01101000‧01100101‧01101101
+        <!-- Center portrait -->
+        <div class="hero-center">
+          <div class="avatar-circle">
+            <div class="avatar-inner">
+              <!-- Replace portrait.jpg with your actual image filename -->
+              <img src="portrait.jpg" alt="portrait of Dimitrios">
             </div>
-            <div class="stacked">
-              <p><strong>the technological republic</strong> — <span class="note">cause… edgy, why not</span></p>
-              <p><strong>zero to one</strong> — <span class="note">nonlinear thinking, contrarian creation</span></p>
-              <p><strong>disciplined entrepreneurship</strong> — <span class="note">but can it be taught (?)</span></p>
-              <p><strong>the art of war</strong> — <span class="note">strategy as psychology, war &amp; business (?)</span></p>
-              <p><strong>the prince</strong> — <span class="note">incentives, influence, realpolitik</span></p>
-              <p><strong>the republic</strong> — <span class="note">i mean, come on… i’m greek</span></p>
-              <p><strong>meditations</strong> — <span class="note">discipline, robust inner architecture</span></p>
-              <p><strong>the myth of sisyphus</strong> — <span class="note">choosing meaning in the absurd</span></p>
-            </div>
-          </section>
+          </div>
+          <div class="hero-tagline">
+            after all, that's me — the signal, distilled.
+          </div>
         </div>
 
-        <!-- PRINCIPLES + CONTACT -->
-        <div class="footer-row">
-          <section id="principles" class="card fade-section">
-            <div class="section-label">section 05 · operating principles</div>
-            <h2 class="section-title">the operating principles, unapologetic.</h2>
-            <div class="mono-tag">
-              👨‍🚀 01100001‧01100010‧01101111‧01110101‧01110100‧00100000‧01101101‧01100101
-            </div>
-            <div class="principles">
-              <p><span class="bullet">▹</span>i read, learn, build, and interact with intention</p>
-              <p><span class="bullet">▹</span>i challenge, fail, iterate… on purpose</p>
-              <p><span class="bullet">▹</span>i find intelligence in human-centered design</p>
-              <p><span class="bullet">▹</span>i choose edges over comfort, in thought &amp; life</p>
-              <p><span class="bullet">▹</span>i believe 0s &amp; 1s &gt; english</p>
-            </div>
-          </section>
-
-          <section id="contact" class="card fade-section">
-            <div class="section-label">section 06 · contact</div>
-            <h2 class="section-title">how to reach me</h2>
-            <div class="contact-info">
-              <p><strong>location:</strong> charlotte, nc · open to remote / hybrid</p>
-              <p><strong>email:</strong> <a href="mailto:you@example.com">you@example.com</a></p>
-              <p><strong>github:</strong> <a href="https://github.com/yourusername" target="_blank">yourusername</a></p>
-              <p><strong>linkedin:</strong> <a href="https://linkedin.com/in/yourprofile" target="_blank">yourprofile</a></p>
-            </div>
-            <div class="footer-note">
-              this page was written in plaintext,<br />rendered in 0s &amp; 1s.
-            </div>
-          </section>
+        <!-- Right: "coder"-like side -->
+        <div class="hero-column">
+          <div class="hero-right-label">&lt;product&nbsp;builder&gt;</div>
+          <div class="hero-sub right">
+            building intelligent, human-centered systems in 0s &amp; 1s.
+          </div>
+          <div class="typing-label" style="text-align:right;">currently</div>
+          <div class="typing-line" id="rightTyping" style="margin-left:auto;"></div>
         </div>
+      </div>
+    </section>
+
+    <!-- ABOUT STRIP -->
+    <section class="about-strip">
+      i <strong>read, learn, build, and interact with intention</strong>. i care about systems that think, products that
+      feel inevitable, and architectures that make complexity quiet.
+    </section>
+
+    <!-- LATEST WORK -->
+    <section class="section" id="work">
+      <div class="section-header">
+        <div class="section-kicker">some of my latest work</div>
+        <h2 class="section-title">selected systems & experiments</h2>
+      </div>
+
+      <div class="work-grid">
+        <article class="card">
+          <div class="card-thumb">
+            <!-- replace thumb images as you like -->
+            <img src="thumb-roshambo.jpg" alt="RoShamBo opponent modeling visualization">
+          </div>
+          <div class="card-title">opponent modeling in roshambo</div>
+          <div class="card-sub">game theory, markov chains, no-regret algorithms.</div>
+          <div class="card-tag">research · ml</div>
+        </article>
+
+        <article class="card">
+          <div class="card-thumb">
+            <img src="thumb-agents.jpg" alt="abstract representation of AI agents">
+          </div>
+          <div class="card-title">agentic workflows</div>
+          <div class="card-sub">tool-using LLMs, reasoning, and self-improving loops.</div>
+          <div class="card-tag">ai systems</div>
+        </article>
+
+        <article class="card">
+          <div class="card-thumb">
+            <img src="thumb-product.jpg" alt="product architecture sketch">
+          </div>
+          <div class="card-title">product & architecture notes</div>
+          <div class="card-sub">turning ambiguous problem spaces into shippable systems.</div>
+          <div class="card-tag">product · architecture</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- BLOG / PDF SECTION -->
+    <section class="section" id="blog">
+      <div class="section-header">
+        <div class="section-kicker">writing & papers</div>
+        <h2 class="section-title">blog, but make it pdf-native</h2>
+      </div>
+
+      <div class="blog-grid">
+        <!-- BLOG CARD EXAMPLE 1 -->
+        <article class="card blog-card" data-pdf="CSC_370_HW_3.pdf" data-title="Opponent Modeling in RoShamBo">
+          <div class="card-title">
+            <span>Opponent Modeling in RoShamBo</span>
+            <span class="pdf-pill">PDF</span>
+          </div>
+          <div class="card-meta">game theory · opponent modelling · rps</div>
+          <div class="card-sub">
+            exploring non-equilibrium strategies with markov models & no-regret learning.
+          </div>
+        </article>
+
+        <!-- BLOG CARD EXAMPLE 2 -->
+        <article class="card blog-card" data-pdf="ai_agents_notes.pdf" data-title="Notes on Agentic Systems">
+          <div class="card-title">
+            <span>Notes on Agentic Systems</span>
+            <span class="pdf-pill">PDF</span>
+          </div>
+          <div class="card-meta">llms · tools · orchestration</div>
+          <div class="card-sub">
+            thoughts on moving from “chatbots” to serious, tool-using systems with memory.
+          </div>
+        </article>
+
+        <!-- BLOG CARD EXAMPLE 3 -->
+        <article class="card blog-card" data-pdf="product_frameworks.pdf" data-title="Product Frameworks for Hard Problems">
+          <div class="card-title">
+            <span>Product Frameworks for Hard Problems</span>
+            <span class="pdf-pill">PDF</span>
+          </div>
+          <div class="card-meta">product · strategy</div>
+          <div class="card-sub">
+            frameworks for navigating ambiguity, constraints, and real-world trade-offs.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="section-header">
+        <div class="section-kicker">contact</div>
+        <h2 class="section-title">where to find me</h2>
+      </div>
+      <div class="about-strip">
+        based in <strong>charlotte, nc</strong>. open to remote / hybrid roles where ai, product, and systems thinking
+        actually matter.
+        <br /><br />
+        email: <strong><a href="mailto:you@example.com">you@example.com</a></strong> · github:
+        <strong><a href="https://github.com/yourusername" target="_blank">yourusername</a></strong> · linkedin:
+        <strong><a href="https://linkedin.com/in/yourprofile" target="_blank">yourprofile</a></strong>
+      </div>
+    </section>
+
+    <footer>
+      <p><span>this page was written in plaintext, rendered in 0s &amp; 1s.</span></p>
+    </footer>
+  </main>
+
+  <!-- PDF MODAL -->
+  <div class="pdf-modal" id="pdfModal" aria-hidden="true">
+    <div class="pdf-modal-inner">
+      <div class="pdf-modal-header">
+        <span id="pdfTitle">Document</span>
+        <button type="button" id="pdfClose" aria-label="Close PDF">×</button>
+      </div>
+      <div class="pdf-frame-wrap">
+        <iframe id="pdfFrame" src="" title="PDF viewer"></iframe>
       </div>
     </div>
   </div>
 
   <script>
-    // Typing animation
-    const phrases = [
-      "systems thinker",
-      "opponent modeller",
-      "builder in 0s & 1s",
-      "architect of workflows"
+    // Typing effects for left & right
+    const leftPhrases = [
+      "systems, not features",
+      "constraints as a design tool",
+      "long-horizon thinking"
     ];
 
-    const typingEl = document.getElementById("typing");
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let deleting = false;
+    const rightPhrases = [
+      "shipping real things",
+      "making complexity quiet",
+      "building with intention"
+    ];
 
-    function tick() {
-      const current = phrases[phraseIndex];
-      if (!deleting) {
-        charIndex++;
-        typingEl.textContent = current.slice(0, charIndex);
-        if (charIndex === current.length) {
-          deleting = true;
-          setTimeout(tick, 1100);
-          return;
-        }
-      } else {
-        charIndex--;
-        typingEl.textContent = current.slice(0, charIndex);
-        if (charIndex === 0) {
-          deleting = false;
-          phraseIndex = (phraseIndex + 1) % phrases.length;
-        }
-      }
-      const delay = deleting ? 40 : 90;
-      setTimeout(tick, delay);
-    }
+    function createTyper(el, phrases, typingSpeed = 75, deleteSpeed = 40, pause = 900) {
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let deleting = false;
 
-    if (typingEl) {
-      tick();
-    }
+      function step() {
+        const phrase = phrases[phraseIndex];
 
-    // Scroll fade-in
-    const fadeSections = document.querySelectorAll(".fade-section");
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
+        if (!deleting) {
+          charIndex++;
+          el.textContent = phrase.slice(0, charIndex);
+          if (charIndex === phrase.length) {
+            deleting = true;
+            setTimeout(step, pause);
+            return;
           }
-        });
-      },
-      { threshold: 0.18 }
-    );
+        } else {
+          charIndex--;
+          el.textContent = phrase.slice(0, charIndex);
+          if (charIndex === 0) {
+            deleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+          }
+        }
 
-    fadeSections.forEach(sec => observer.observe(sec));
+        setTimeout(step, deleting ? deleteSpeed : typingSpeed);
+      }
+
+      step();
+    }
+
+    const leftEl = document.getElementById("leftTyping");
+    const rightEl = document.getElementById("rightTyping");
+    if (leftEl) createTyper(leftEl, leftPhrases);
+    if (rightEl) createTyper(rightEl, rightPhrases, 80, 45, 1000);
+
+    // PDF modal logic
+    const modal = document.getElementById("pdfModal");
+    const pdfFrame = document.getElementById("pdfFrame");
+    const pdfTitle = document.getElementById("pdfTitle");
+    const closeBtn = document.getElementById("pdfClose");
+
+    function openPdf(src, title) {
+      pdfFrame.src = src;
+      pdfTitle.textContent = title || "Document";
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closePdf() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      pdfFrame.src = "";
+    }
+
+    document.querySelectorAll(".blog-card").forEach(card => {
+      card.addEventListener("click", () => {
+        const src = card.getAttribute("data-pdf");
+        const title = card.getAttribute("data-title");
+        if (src) {
+          openPdf(src, title);
+        }
+      });
+    });
+
+    closeBtn.addEventListener("click", closePdf);
+    modal.addEventListener("click", e => {
+      if (e.target === modal) closePdf();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && modal.classList.contains("open")) {
+        closePdf();
+      }
+    });
   </script>
 </body>
 </html>
