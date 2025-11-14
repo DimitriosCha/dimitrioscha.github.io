@@ -6,25 +6,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
         :root {
-            /* DARK MODE PRIMARY */
-            --bg-page: #0e1217;
-            --bg-card: #181d26;
-            --bg-sidebar: #11151c;
-            --text-main: #f0f4f8;
-            --text-muted: #8893a7;
-            --text-kicker: #4f46e5;
-            /* ACCENT */
-            --accent: #4f46e5;
-            --accent-soft: rgba(79, 70, 229, 0.15);
-            --border-subtle: #2d3748;
-            --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.4);
-            --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            /* WARM, ORGANIC, "JAPANDI" PALETTE */
+            --bg-page: #FCFBF9;
+            --bg-card: #ffffff;
+            --text-main: #3D3A36;
+            --text-muted: #8A8682;
+            --accent: #D95F43; /* Warm Terracotta */
+            --accent-soft: #FAEAE6;
+            --border-subtle: #EAE8E5;
+            
+            /* High-craft shadows */
+            --shadow-soft: 0 4px 12px rgba(61, 58, 54, 0.05);
+            --shadow-hover: 0 8px 24px rgba(61, 58, 54, 0.1);
+
+            --sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
+
+        /* Load the "Inter" font for a modern feel */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         * {
             box-sizing: border-box;
         }
+
+        /* INNOVATION 1: "ANIMATED ALMOST" AMBIENT BACKGROUND
+        This pseudo-element sits fixed behind all content.
+        Its soft, warm gradients move slowly, giving the
+        page a "living" or "breathing" quality.
+        */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            /* Two subtle, warm gradients. One uses the new accent, 
+               the other a hint of the old accent for a tech-organic mix */
+            background: radial-gradient(circle at 10% 20%, rgba(217, 95, 67, 0.04), transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.04), transparent 40%);
+            
+            /* The animation is extremely slow (25s) and alternates */
+            animation: soft-glow 25s linear infinite alternate;
+        }
+
+        @keyframes soft-glow {
+            0% { 
+                transform: translate(0, 0) rotate(0deg); 
+                opacity: 0.7; 
+            }
+            100% { 
+                transform: translate(10px, 20px) rotate(5deg); 
+                opacity: 1; 
+            }
+        }
+        /* End Innovation 1 */
+
 
         body {
             margin: 0;
@@ -32,180 +69,129 @@
             color: var(--text-main);
             background: var(--bg-page);
             -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
+            font-size: 16px;
+            line-height: 1.7; /* User-friendly readability */
         }
 
         a {
-            color: var(--text-main);
+            color: var(--accent);
             text-decoration: none;
+            font-weight: 500;
             transition: color 0.15s ease;
         }
-
         a:hover {
-            color: var(--accent);
-        }
-
-        /* MAIN LAYOUT ---------------------------------------------------- */
-        .container {
-            display: grid;
-            grid-template-columns: 240px minmax(0, 1fr);
-            max-width: 1400px;
-            margin: 0 auto;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border-subtle);
-            padding: 40px 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 30px;
-            font-size: 0.9rem;
-        }
-
-        .content {
-            padding: 40px 50px 80px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* SIDEBAR COMPONENTS */
-        .identity {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .avatar-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 999px;
-            border: 2px solid var(--accent);
-            padding: 2px;
-            overflow: hidden;
-        }
-
-        .avatar-inner {
-            width: 100%;
-            height: 100%;
-            border-radius: 999px;
-            background: #2d3748;
-        }
-
-        .identity h1 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 0;
-            letter-spacing: -0.01em;
-        }
-
-        .identity p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        .nav-links {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 0.88rem;
-            text-transform: lowercase;
-            width: 100%;
-        }
-
-        .nav-links a {
-            padding: 6px 0;
-            color: var(--text-muted);
-            font-weight: 500;
-            transition: color 0.15s ease, background 0.15s ease;
-            position: relative;
-        }
-
-        .nav-links a::before {
-            content: "→";
-            margin-right: 8px;
-            font-weight: 400;
-            opacity: 0;
-            transition: opacity 0.15s ease;
-        }
-
-        .nav-links a:hover {
             color: var(--text-main);
         }
 
-        .nav-links a:hover::before {
-            opacity: 1;
+        /* LAYOUT: "MA" (JAPANDI-INSPIRED NEGATIVE SPACE)
+        A single, focused column for a calm, uncluttered feel.
+        */
+        .page-wrapper {
+            max-width: 840px;
+            margin: 0 auto;
+            padding: 100px 40px;
         }
 
-        .social-links {
-            margin-top: auto;
+        main {
             display: flex;
-            gap: 16px;
+            flex-direction: column;
+            gap: 80px; /* Generous space between sections */
         }
 
-        .social-links a {
-            color: var(--text-muted);
-            font-size: 1.2rem;
+        /* INNOVATION 2: STAGGERED FADE-IN ANIMATION
+        Elements don't just "appear." They fade in gracefully
+        as the page loads, feeling crafted and deliberate.
+        */
+        @keyframes fade-in-up {
+            from { 
+                opacity: 0; 
+                transform: translateY(15px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
-
-        .social-links a:hover {
-            color: var(--accent);
-        }
-
-        /* CONTENT SECTIONS ---------------------------------------------------- */
+        
+        .hero, 
         .section {
-            padding-top: 50px;
-            border-top: 1px solid var(--border-subtle);
-            margin-top: 50px;
+            /* Apply animation, 'both' keeps final state */
+            animation: fade-in-up 0.8s ease-out 0s both;
         }
 
-        .section:first-of-type {
-            border-top: none;
-            margin-top: 0;
-            padding-top: 0;
+        /* Stagger the animation start */
+        .hero { animation-delay: 0.2s; }
+        #work { animation-delay: 0.4s; }
+        #writing { animation-delay: 0.6s; }
+        #contact { animation-delay: 0.8s; }
+        footer { animation-delay: 1.0s; }
+        /* End Innovation 2 */
+
+
+        /* HERO SECTION */
+        .hero {
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
+        .hero-title {
+            font-size: 2.6rem;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        /* INNOVATION 3: INTERACTIVE HERO TEXT
+        Key roles are interactive, "lighting up" on hover
+        with the accent color, reinforcing your skills.
+        */
+        .hero-title-interactive {
+            display: inline-block;
+            transition: color 0.2s ease, text-shadow 0.2s ease;
+            cursor: default;
+        }
+        .hero-title-interactive:hover {
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(217, 95, 67, 0.3);
+        }
+        /* End Innovation 3 */
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin: 16px 0 0;
+            max-width: 700px;
+        }
+        .hero-subtitle strong {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        /* SECTION STYLING */
         .section-header {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .section-kicker {
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: var(--text-kicker);
+            color: var(--accent);
             font-weight: 600;
         }
 
         .section-title {
             font-size: 1.8rem;
-            font-weight: 700;
+            font-weight: 600;
             margin: 6px 0 0;
             letter-spacing: -0.02em;
-        }
-
-        /* HERO / INTRO */
-        .hero-intro {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-top: 15px;
-            color: var(--text-muted);
-        }
-
-        .hero-intro strong {
             color: var(--text-main);
-            font-weight: 500;
         }
 
-        /* WORK GRID --------------------------------------------------------- */
-        .work-grid,
-        .blog-grid {
+        /* CARD GRID (WORK & WRITING) */
+        .grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 24px;
@@ -213,60 +199,61 @@
 
         .card {
             background: var(--bg-card);
-            border-radius: 12px;
             border: 1px solid var(--border-subtle);
+            border-radius: 12px;
             padding: 18px;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            transition: border-color 0.15s ease, transform 0.1s ease;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+            cursor: pointer;
         }
-
+        
+        /* Refined hover: physical lift + soft shadow */
         .card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(217, 95, 67, 0.4);
         }
 
         .card-thumb {
             border-radius: 8px;
             overflow: hidden;
-            background: #374151;
+            background: #F4F4F4;
             height: 140px;
+            border: 1px solid var(--border-subtle);
         }
 
         .card-thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.8;
         }
 
         .card-title {
             font-size: 1rem;
             font-weight: 600;
             letter-spacing: -0.01em;
+            color: var(--text-main);
         }
 
         .card-sub {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
-            line-height: 1.4;
+            line-height: 1.6;
         }
 
         .card-tag {
-            margin-top: 2px;
+            margin-top: 4px;
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.15em;
             color: var(--accent);
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        /* BLOG / PDF CARDS -------------------------------------------------- */
-        .blog-card {
-            cursor: pointer;
-        }
-
+        /* PDF/BLOG CARD SPECIFICS */
         .blog-card .card-title {
             display: flex;
             justify-content: space-between;
@@ -291,36 +278,33 @@
             flex-shrink: 0;
         }
 
-        /* CONTACT STRIP ------------------------------------------------------ */
+        /* CONTACT & FOOTER */
         .contact-strip {
-            font-size: 0.9rem;
-            line-height: 1.6;
+            font-size: 1rem;
+            line-height: 1.7;
             margin-top: 20px;
             color: var(--text-muted);
         }
 
-        .contact-strip a {
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        /* FOOTER ------------------------------------------------------------ */
         footer {
-            margin-top: 50px;
-            font-size: 0.75rem;
-            color: #4b5563;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 0.8rem;
+            color: var(--text-muted);
             text-align: center;
         }
 
         footer span {
             font-family: var(--mono);
         }
-
-        /* PDF MODAL (Same as original, simplified styles) -------------------- */
+        
+        /* PDF MODAL (Re-skinned for new palette) */
         .pdf-modal {
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(61, 58, 54, 0.8); /* Warm backdrop */
+            backdrop-filter: blur(8px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -336,12 +320,13 @@
             max-width: 960px;
             width: 100%;
             max-height: 90vh;
-            background: var(--bg-sidebar);
+            background: #252321; /* Dark, warm modal */
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: var(--shadow-soft);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
+            border: 1px solid #444;
         }
 
         .pdf-modal-header {
@@ -349,10 +334,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #020617;
-            color: var(--text-main);
+            background: #312F2D;
+            color: var(--bg-page);
             font-size: 0.9rem;
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 1px solid #444;
         }
 
         .pdf-modal-header button {
@@ -366,7 +351,7 @@
 
         .pdf-frame-wrap {
             flex: 1;
-            background: var(--bg-page);
+            background: var(--text-main);
         }
 
         .pdf-frame-wrap iframe {
@@ -376,112 +361,45 @@
         }
 
         /* RESPONSIVE -------------------------------------------------------- */
-        @media (max-width: 960px) {
-            .container {
-                grid-template-columns: 1fr; /* Stack layout on smaller screens */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 60px 20px;
             }
 
-            .sidebar {
-                position: relative;
-                height: auto;
-                border-right: none;
-                border-bottom: 1px solid var(--border-subtle);
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                padding: 20px 24px;
+            .grid {
+                grid-template-columns: 1fr; /* Stack cards on mobile */
             }
 
-            .identity {
-                flex-direction: row;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .avatar-circle {
-                width: 50px;
-                height: 50px;
-            }
-
-            .identity h1 {
-                font-size: 1.1rem;
-            }
-
-            .identity p {
-                display: none; /* Hide tagline on mobile sidebar */
-            }
-
-            .nav-links,
-            .social-links {
-                display: none; /* Hide navigation and social links from top bar on mobile */
-            }
-
-            .content {
-                padding: 30px 20px 60px;
-            }
-
-            .work-grid,
-            .blog-grid {
-                grid-template-columns: 1fr;
+            .hero-title {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="sidebar">
-            <div class="identity">
-                <div class="avatar-circle">
-                    <div class="avatar-inner">
-                        <img src="portrait.jpg" alt="portrait of Dimitrios">
-                    </div>
-                </div>
-                <div>
-                    <h1>Dimitrios C.</h1>
-                    <p>AI Strategist & Product Builder</p>
-                </div>
-            </div>
 
-            <nav class="nav-links">
-                <a href="#intro">/ &nbsp; intro</a>
-                <a href="#work">/ &nbsp; work</a>
-                <a href="#writing">/ &nbsp; writing</a>
-                <a href="#contact">/ &nbsp; contact</a>
-            </nav>
+    <div class="page-wrapper">
 
-            <div class="social-links">
-                <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub">G</a>
-                <a href="https://linkedin.com/in/yourprofile" target="_blank" aria-label="LinkedIn">in</a>
-                <a href="mailto:you@example.com" aria-label="Email">@</a>
-            </div>
+        <header class="hero" id="intro">
+            <h1 class="hero-title">
+                <span class="hero-title-interactive">AI Strategist.</span>
+                <span class="hero-title-interactive">Product Builder.</span>
+            </h1>
+            <p class="hero-subtitle">
+                I build intelligent, human-centered systems from first principles.
+                My focus is on <strong>making complexity quiet</strong> and turning ambiguous
+                problem spaces into <strong>inevitable products</strong>.
+            </p>
         </header>
 
-        <main class="content">
-
-            <section id="intro">
-                <div class="section-kicker">the signal, distilled.</div>
-                <h2 class="section-title">Architecting systems that think.</h2>
-                <p class="hero-intro">
-                    I **read, learn, build, and interact with intention**. My focus is on turning ambiguous problem spaces into **inevitable, intelligent products**. I specialize in **AI strategy**, agentic systems, and building high-leverage products from first principles.
-                </p>
-            </section>
-
+        <main>
             <section class="section" id="work">
                 <div class="section-header">
-                    <div class="section-kicker">selected systems & experiments</div>
-                    <h2 class="section-title">Projects.</h2>
+                    <div class="section-kicker">Systems & Experiments</div>
+                    <h2 class="section-title">Selected Work</h2>
                 </div>
 
-                <div class="work-grid">
-                    <article class="card">
-                        <div class="card-thumb">
-                            <img src="thumb-roshambo.jpg" alt="RoShamBo opponent modeling visualization">
-                        </div>
-                        <div class="card-title">Opponent Modeling in RoShamBo</div>
-                        <div class="card-sub">Exploration of game theory, Markov chains, and no-regret algorithms for building robust non-equilibrium strategies.</div>
-                        <div class="card-tag">Research · ML</div>
-                    </article>
-
+                <div class="grid">
                     <article class="card">
                         <div class="card-thumb">
                             <img src="thumb-agents.jpg" alt="abstract representation of AI agents">
@@ -493,10 +411,19 @@
 
                     <article class="card">
                         <div class="card-thumb">
+                            <img src="thumb-roshambo.jpg" alt="RoShamBo opponent modeling visualization">
+                        </div>
+                        <div class="card-title">Opponent Modeling in RoShamBo</div>
+                        <div class="card-sub">Game theory, Markov chains, and no-regret algorithms for robust non-equilibrium strategies.</div>
+                        <div class="card-tag">Research · ML</div>
+                    </article>
+                    
+                    <article class="card">
+                        <div class="card-thumb">
                             <img src="thumb-product.jpg" alt="product architecture sketch">
                         </div>
                         <div class="card-title">Product & Architecture Notes</div>
-                        <div class="card-sub">Frameworks and blueprints for turning complex, high-ambiguity problems into shippable, scalable systems.</div>
+                        <div class="card-sub">Frameworks for turning high-ambiguity problems into shippable, scalable systems.</div>
                         <div class="card-tag">Product · Architecture</div>
                     </article>
 
@@ -504,8 +431,8 @@
                         <div class="card-thumb">
                             <img src="thumb-data.jpg" alt="data visualization chart">
                         </div>
-                        <div class="card-title">High-Dimensional Data Visualization</div>
-                        <div class="card-sub">Experiments in effective information transfer and rendering for complex data sets where every dimension matters.</div>
+                        <div class="card-title">High-Dimensional Data Viz</div>
+                        <div class="card-sub">Experiments in effective information transfer and rendering for complex data sets.</div>
                         <div class="card-tag">Data Viz · UX</div>
                     </article>
                 </div>
@@ -513,11 +440,29 @@
 
             <section class="section" id="writing">
                 <div class="section-header">
-                    <div class="section-kicker">papers & perspectives</div>
-                    <h2 class="section-title">Writing.</h2>
+                    <div class="section-kicker">Papers & Perspectives</div>
+                    <h2 class="section-title">Writing</h2>
                 </div>
 
-                <div class="blog-grid">
+                <div class="grid">
+                    <article class="card blog-card" data-pdf="ai_agents_notes.pdf" data-title="Notes on Agentic Systems">
+                        <div class="card-title">
+                            <span>Notes on Agentic Systems</span>
+                            <span class="pdf-pill">PDF</span>
+                        </div>
+                        <div class="card-meta">llms · orchestration</div>
+                        <div class="card-sub">Moving from "chatbots" to serious, tool-using systems with memory and self-correction.</div>
+                    </article>
+                    
+                    <article class="card blog-card" data-pdf="product_frameworks.pdf" data-title="Product Frameworks for Hard Problems">
+                        <div class="card-title">
+                            <span>Product Frameworks for Hard Problems</span>
+                            <span class="pdf-pill">PDF</span>
+                        </div>
+                        <div class="card-meta">product · strategy</div>
+                        <div class="card-sub">Navigating ambiguity, constraints, and real-world trade-offs in new product development.</div>
+                    </article>
+
                     <article class="card blog-card" data-pdf="CSC_370_HW_3.pdf" data-title="Opponent Modeling in RoShamBo">
                         <div class="card-title">
                             <span>Opponent Modeling in RoShamBo</span>
@@ -527,54 +472,37 @@
                         <div class="card-sub">Exploring non-equilibrium strategies with markov models and no-regret learning.</div>
                     </article>
 
-                    <article class="card blog-card" data-pdf="ai_agents_notes.pdf" data-title="Notes on Agentic Systems">
-                        <div class="card-title">
-                            <span>Notes on Agentic Systems</span>
-                            <span class="pdf-pill">PDF</span>
-                        </div>
-                        <div class="card-meta">llms · orchestration</div>
-                        <div class="card-sub">Thoughts on moving from "chatbots" to serious, tool-using systems with memory.</div>
-                    </article>
-
-                    <article class="card blog-card" data-pdf="product_frameworks.pdf" data-title="Product Frameworks for Hard Problems">
-                        <div class="card-title">
-                            <span>Product Frameworks for Hard Problems</span>
-                            <span class="pdf-pill">PDF</span>
-                        </div>
-                        <div class="card-meta">product · strategy</div>
-                        <div class="card-sub">Frameworks for navigating ambiguity, constraints, and real-world trade-offs in new product development.</div>
-                    </article>
-
                     <article class="card blog-card" data-pdf="system_design.pdf" data-title="Making Complexity Quiet">
                         <div class="card-title">
                             <span>Making Complexity Quiet</span>
                             <span class="pdf-pill">PDF</span>
                         </div>
                         <div class="card-meta">architecture · strategy</div>
-                        <div class="card-sub">A perspective on architectural choices that minimize cognitive load and maximize long-term leverage.</div>
+                        <div class="card-sub">Architectural choices that minimize cognitive load and maximize long-term leverage.</div>
                     </article>
                 </div>
             </section>
 
             <section class="section" id="contact">
                 <div class="section-header">
-                    <div class="section-kicker">get in touch</div>
-                    <h2 class="section-title">Contact.</h2>
+                    <div class="section-kicker">Get In Touch</div>
+                    <h2 class="section-title">Contact</h2>
                 </div>
                 <div class="contact-strip">
-                    Based in **Charlotte, NC**. Always open to remote/hybrid opportunities where AI, product, and deep systems thinking are central to the mission.
+                    Based in **Charlotte, NC**. Open to opportunities where AI, product, and deep systems thinking are central to the mission.
                     <br /><br />
-                    **Email:** <a href="mailto:you@example.com">you@example.com</a> · **GitHub:** <a href="https://github.com/yourusername" target="_blank">yourusername</a> · **LinkedIn:** <a href="https://linkedin.com/in/yourprofile" target="_blank">yourprofile</a>
+                    <a href="mailto:you@example.com">you@example.com</a> · 
+                    <a href="https://github.com/yourusername" target="_blank">GitHub</a> · 
+                    <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
                 </div>
             </section>
-
-            <footer>
-                <p><span>// this page was written in plaintext, rendered in 0s &amp; 1s.</span></p>
-            </footer>
         </main>
-    </div>
 
-    <div class="pdf-modal" id="pdfModal" aria-hidden="true">
+        <footer>
+            <p><span>// the signal, distilled.</span></p>
+        </footer>
+
+    </div> <div class="pdf-modal" id="pdfModal" aria-hidden="true">
         <div class="pdf-modal-inner">
             <div class="pdf-modal-header">
                 <span id="pdfTitle">Document</span>
@@ -587,7 +515,7 @@
     </div>
 
     <script>
-        // PDF modal logic (Simplified and cleaned up)
+        // PDF modal logic (Same as before)
         const modal = document.getElementById("pdfModal");
         const pdfFrame = document.getElementById("pdfFrame");
         const pdfTitle = document.getElementById("pdfTitle");
@@ -598,7 +526,7 @@
             pdfTitle.textContent = title || "Document";
             modal.classList.add("open");
             modal.setAttribute("aria-hidden", "false");
-            document.body.style.overflow = 'hidden'; // Prevent scrolling underneath
+            document.body.style.overflow = 'hidden';
         }
 
         function closePdf() {
