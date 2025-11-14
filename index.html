@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>the signal, distilled.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #02040a;
+      --bg-elevated: #070b14;
+      --bg-soft: #0b101d;
+      --border-subtle: #1c2230;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --accent: #7c3aed;
+      --accent-soft: rgba(124, 58, 237, 0.14);
+      --accent-2: #22d3ee;
+      --shadow-soft: 0 30px 80px rgba(0, 0, 0, 0.8);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at top, #111827 0, #02040a 55%) fixed,
+        #02040a;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      min-height: 100vh;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 72px;
+    }
+
+    .frame {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.97), rgba(3, 7, 18, 0.97));
+      border-radius: 30px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: var(--shadow-soft);
+      padding: 20px 22px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .frame::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 5% 0%, rgba(56, 189, 248, 0.12) 0, transparent 50%),
+        radial-gradient(circle at 95% 10%, rgba(124, 58, 237, 0.22) 0, transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .frame-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* NAVBAR */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: radial-gradient(circle at 30% 0, #22d3ee 0, transparent 55%),
+                  radial-gradient(circle at 70% 100%, #7c3aed 0, transparent 55%);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: #e5e7eb;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-text .title {
+      font-size: 0.9rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .brand-text .subtitle {
+      font-size: 0.72rem;
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      border-bottom-color: rgba(148, 163, 184, 0.7);
+      color: var(--text);
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+      gap: 24px;
+      padding: 18px 0 26px;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .hero-title {
+      font-size: 2.1rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .hero-title span.accent {
+      background: linear-gradient(135deg, #a855f7, #22d3ee);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-role {
+      font-size: 0.98rem;
+      color: var(--muted);
+    }
+
+    .hero-typing {
+      margin-top: 4px;
+      font-size: 0.86rem;
+      font-family: var(--mono);
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hero-typing-label {
+      color: var(--muted);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .typing-text {
+      min-height: 1.2em;
+      border-right: 1px solid #e5e7eb;
+      padding-right: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .hero-actions {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.84rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 6px 13px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.95);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text);
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-primary {
+      background: radial-gradient(circle at 20% 0, #22d3ee 0, transparent 55%),
+                  linear-gradient(135deg, #4f46e5, #7c3aed);
+      border-color: rgba(191, 219, 254, 0.9);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(209, 213, 219, 0.9);
+      background-color: rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+      text-align: right;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 5px 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.4);
+    }
+
+    .meta-block {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 12px;
+      padding: 8px 10px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      min-width: 210px;
+    }
+
+    .meta-block div {
+      margin-bottom: 2px;
+    }
+
+    .meta-label {
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .meta-value {
+      font-size: 0.82rem;
+      color: #e5e7eb;
+    }
+
+    /* LAYOUT: MAIN CONTENT */
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    section.card {
+      background: var(--bg-elevated);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: 14px 16px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    section.card::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18) 0, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    section.card:hover::before {
+      opacity: 1;
+    }
+
+    .section-label {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      margin: 0 0 12px;
+      color: #e5e7eb;
+    }
+
+    .section-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .mono-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      background: var(--accent-soft);
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      color: #e5e7eb;
+      margin-bottom: 8px;
+    }
+
+    /* PUBLICATIONS & PROJECTS */
+    .list {
+      margin: 4px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .list-item {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      background: var(--bg-soft);
+      padding: 8px 10px;
+      font-size: 0.86rem;
+    }
+
+    .list-item-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .list-item-title {
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .list-item-meta {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .list-item-body {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .list-item a {
+      font-size: 0.8rem;
+      color: #a5b4fc;
+      text-decoration: none;
+    }
+
+    .list-item a:hover {
+      text-decoration: underline;
+    }
+
+    /* BOOKS & PRINCIPLES */
+    .stacked {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .stacked p {
+      margin: 0;
+      font-size: 0.86rem;
+    }
+
+    .stacked strong {
+      color: #e5e7eb;
+    }
+
+    .stacked span.note {
+      color: var(--muted);
+    }
+
+    .principles p {
+      margin: 0 0 4px;
+      font-size: 0.86rem;
+    }
+
+    .principles p:last-child {
+      margin-bottom: 0;
+    }
+
+    .bullet {
+      color: var(--accent);
+      margin-right: 6px;
+    }
+
+    /* CONTACT / FOOTER */
+    .footer-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .contact-info p {
+      margin: 0 0 3px;
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .contact-info strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .footer-note {
+      text-align: right;
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    /* ANIMATIONS: SCROLL FADE */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-meta {
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .footer-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .footer-note {
+        text-align: left;
+        margin-top: 4px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .frame {
+        padding: 16px 14px 22px;
+        border-radius: 22px;
+      }
+
+      .hero-title {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="frame">
+      <div class="frame-inner">
+        <!-- NAV -->
+        <nav class="nav">
+          <div class="nav-left">
+            <div class="brand-mark">DC</div>
+            <div class="brand-text">
+              <div class="title">SIGNAL</div>
+              <div class="subtitle">ai · product · systems</div>
+            </div>
+          </div>
+          <div class="nav-links">
+            <a href="#about">about</a>
+            <a href="#publications">publications</a>
+            <a href="#projects">projects</a>
+            <a href="#principles">principles</a>
+            <a href="#contact">contact</a>
+          </div>
+        </nav>
+
+        <!-- HERO -->
+        <header class="hero">
+          <div class="hero-main fade-section">
+            <div class="kicker">after all, that's me</div>
+            <h1 class="hero-title">
+              ✦ <span class="accent">the signal, distilled.</span>
+            </h1>
+            <p class="hero-role">
+              ai strategist • product manager — building systems that think, not just react.
+            </p>
+            <div class="hero-typing">
+              <span class="hero-typing-label">roles</span>
+              <span class="typing-text" id="typing"></span>
+            </div>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="https://github.com/yourusername" target="_blank">github</a>
+              <a class="btn" href="https://linkedin.com/in/yourprofile" target="_blank">linkedin</a>
+              <a class="btn" href="mailto:you@example.com">email</a>
+              <a class="btn" href="cv.pdf" target="_blank">cv / resume</a>
+            </div>
+          </div>
+
+          <div class="hero-meta fade-section">
+            <div class="status-pill">
+              <span class="status-dot"></span>
+              <span>actively reading, learning, building on purpose</span>
+            </div>
+            <div class="meta-block">
+              <div class="meta-label">location</div>
+              <div class="meta-value">charlotte, nc · remote friendly</div>
+            </div>
+            <div class="meta-block">
+              <div class="meta-label">focus</div>
+              <div class="meta-value">ai systems · agentic workflows · product architecture</div>
+            </div>
+          </div>
+        </header>
+
+        <!-- MAIN GRID -->
+        <div class="grid">
+          <!-- ABOUT -->
+          <section id="about" class="card fade-section">
+            <div class="section-label">section 01 · about</div>
+            <h2 class="section-title">who i am, in plaintext</h2>
+            <div class="section-body">
+              <p>
+                i like building systems that have opinions — about data, about decisions, about how work should flow.
+                i live at the intersection of ai, product, and systems design: part strategist, part builder, part
+                debugger of how people and tools interact.
+              </p>
+              <p>
+                i care about clarity, architecture, and making complex things feel inevitable rather than overwhelming.
+                i read deeply, learn deliberately, and treat every project as a way to refactor how i think.
+              </p>
+            </div>
+          </section>
+
+          <!-- PUBLICATIONS -->
+          <section id="publications" class="card fade-section">
+            <div class="section-label">section 02 · publications</div>
+            <h2 class="section-title">papers & writing</h2>
+            <ul class="list">
+              <li class="list-item">
+                <div class="list-item-header">
+                  <div class="list-item-title">Opponent Modeling in RoShamBo</div>
+                  <div class="list-item-meta">game theory · opponent modelling · rpsls</div>
+                </div>
+                <div class="list-item-body">
+                  explored markov chains, fictitious play, and no-regret learning to model non-equilibrium opponents in
+                  rock-paper-scissors-lizard-spock.
+                  <div><a href="CSC_370_HW_3.pdf" target="_blank">read the paper →</a></div>
+                </div>
+              </li>
+              <li class="list-item">
+                <div class="list-item-header">
+                  <div class="list-item-title">upcoming work</div>
+                  <div class="list-item-meta">ai systems · agents · decision layers</div>
+                </div>
+                <div class="list-item-body">
+                  space reserved for future essays & experiments on agentic workflows, constraint systems, and how humans
+                  collaborate with models.
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <!-- SECOND GRID -->
+        <div class="grid">
+          <!-- PROJECTS -->
+          <section id="projects" class="card fade-section">
+            <div class="section-label">section 03 · projects</div>
+            <h2 class="section-title">systems i've been building</h2>
+            <ul class="list">
+              <li class="list-item">
+                <div class="list-item-header">
+                  <div class="list-item-title">ai agents & tool-using systems</div>
+                  <div class="list-item-meta">llms · orchestration · reasoning</div>
+                </div>
+                <div class="list-item-body">
+                  designing workflows where models don’t just predict, but call tools, write code, and maintain their own
+                  state — focused on robustness, not demos.
+                </div>
+              </li>
+              <li class="list-item">
+                <div class="list-item-header">
+                  <div class="list-item-title">data-driven decision engines</div>
+                  <div class="list-item-meta">pipelines · semantics · constraints</div>
+                </div>
+                <div class="list-item-body">
+                  building systems that classify, cluster, and organize data autonomously, reducing configuration and
+                  exposing clean abstractions to humans.
+                </div>
+              </li>
+              <li class="list-item">
+                <div class="list-item-header">
+                  <div class="list-item-title">product & architecture frameworks</div>
+                  <div class="list-item-meta">product thinking · design · execution</div>
+                </div>
+                <div class="list-item-body">
+                  frameworks for turning ambiguous problem spaces into shippable systems — balancing research,
+                  constraints, and real-world timelines.
+                </div>
+              </li>
+            </ul>
+          </section>
+
+          <!-- BOOKS -->
+          <section class="card fade-section">
+            <div class="section-label">section 04 · signal</div>
+            <h2 class="section-title">the ideas that built me</h2>
+            <div class="mono-tag">
+              📚 01110010‧01100101‧01100001‧01100100‧01110100‧01101000‧01100101‧01101101
+            </div>
+            <div class="stacked">
+              <p><strong>the technological republic</strong> — <span class="note">cause… edgy, why not</span></p>
+              <p><strong>zero to one</strong> — <span class="note">nonlinear thinking, contrarian creation</span></p>
+              <p><strong>disciplined entrepreneurship</strong> — <span class="note">but can it be taught (?)</span></p>
+              <p><strong>the art of war</strong> — <span class="note">strategy as psychology, war &amp; business (?)</span></p>
+              <p><strong>the prince</strong> — <span class="note">incentives, influence, realpolitik</span></p>
+              <p><strong>the republic</strong> — <span class="note">i mean, come on… i’m greek</span></p>
+              <p><strong>meditations</strong> — <span class="note">discipline, robust inner architecture</span></p>
+              <p><strong>the myth of sisyphus</strong> — <span class="note">choosing meaning in the absurd</span></p>
+            </div>
+          </section>
+        </div>
+
+        <!-- PRINCIPLES + CONTACT -->
+        <div class="footer-row">
+          <section id="principles" class="card fade-section">
+            <div class="section-label">section 05 · operating principles</div>
+            <h2 class="section-title">the operating principles, unapologetic.</h2>
+            <div class="mono-tag">
+              👨‍🚀 01100001‧01100010‧01101111‧01110101‧01110100‧00100000‧01101101‧01100101
+            </div>
+            <div class="principles">
+              <p><span class="bullet">▹</span>i read, learn, build, and interact with intention</p>
+              <p><span class="bullet">▹</span>i challenge, fail, iterate… on purpose</p>
+              <p><span class="bullet">▹</span>i find intelligence in human-centered design</p>
+              <p><span class="bullet">▹</span>i choose edges over comfort, in thought &amp; life</p>
+              <p><span class="bullet">▹</span>i believe 0s &amp; 1s &gt; english</p>
+            </div>
+          </section>
+
+          <section id="contact" class="card fade-section">
+            <div class="section-label">section 06 · contact</div>
+            <h2 class="section-title">how to reach me</h2>
+            <div class="contact-info">
+              <p><strong>location:</strong> charlotte, nc · open to remote / hybrid</p>
+              <p><strong>email:</strong> <a href="mailto:you@example.com">you@example.com</a></p>
+              <p><strong>github:</strong> <a href="https://github.com/yourusername" target="_blank">yourusername</a></p>
+              <p><strong>linkedin:</strong> <a href="https://linkedin.com/in/yourprofile" target="_blank">yourprofile</a></p>
+            </div>
+            <div class="footer-note">
+              this page was written in plaintext,<br />rendered in 0s &amp; 1s.
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Typing animation
+    const phrases = [
+      "systems thinker",
+      "opponent modeller",
+      "builder in 0s & 1s",
+      "architect of workflows"
+    ];
+
+    const typingEl = document.getElementById("typing");
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function tick() {
+      const current = phrases[phraseIndex];
+      if (!deleting) {
+        charIndex++;
+        typingEl.textContent = current.slice(0, charIndex);
+        if (charIndex === current.length) {
+          deleting = true;
+          setTimeout(tick, 1100);
+          return;
+        }
+      } else {
+        charIndex--;
+        typingEl.textContent = current.slice(0, charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+      }
+      const delay = deleting ? 40 : 90;
+      setTimeout(tick, delay);
+    }
+
+    if (typingEl) {
+      tick();
+    }
+
+    // Scroll fade-in
+    const fadeSections = document.querySelectorAll(".fade-section");
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.18 }
+    );
+
+    fadeSections.forEach(sec => observer.observe(sec));
+  </script>
+</body>
+</html>
