@@ -243,7 +243,6 @@
             font-size: 1.2rem;
             color: var(--accent-warm);
             font-weight: 500;
-            min-width: 280px;
         }
 
         .typing-cursor {
@@ -997,150 +996,93 @@
 
     <div class="modal" id="pdfModal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">×</button>
-            <iframe id="pdfViewer" class="modal-iframe"></iframe>
+            <button class="modal-close" id="modalClose">&times;</button>
+            <iframe class="modal-iframe" id="pdfFrame" src=""></iframe>
         </div>
     </div>
 
     <script>
-        // Typing animation
+        // Typing effect
+        const typingElement = document.getElementById('typingText');
         const phrases = [
-            "systems thinker",
-            "builder in 0s & 1s",
-            "opponent modeller",
-            "architect of workflows"
+            "building systems with opinions",
+            "making complexity feel inevitable",
+            "debugging human-tool interaction",
+            "refactoring how i think"
         ];
-        
         let phraseIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
-        const typingSpeed = 100;
-        const deletingSpeed = 50;
-        const pauseTime = 2000;
 
         function type() {
             const currentPhrase = phrases[phraseIndex];
-            const typingText = document.getElementById('typingText');
+            let displayText = '';
 
             if (isDeleting) {
-                typingText.textContent = currentPhrase.substring(0, charIndex - 1);
+                displayText = currentPhrase.substring(0, charIndex - 1);
                 charIndex--;
             } else {
-                typingText.textContent = currentPhrase.substring(0, charIndex + 1);
+                displayText = currentPhrase.substring(0, charIndex + 1);
                 charIndex++;
             }
 
+            typingElement.textContent = displayText;
+
+            let typeSpeed = isDeleting ? 75 : 150;
+
             if (!isDeleting && charIndex === currentPhrase.length) {
-                setTimeout(() => { isDeleting = true; }, pauseTime);
+                typeSpeed = 2000; // Pause at end of phrase
+                isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500; // Pause before new phrase
             }
 
-            const speed = isDeleting ? deletingSpeed : typingSpeed;
-            setTimeout(type, speed);
+            setTimeout(type, typeSpeed);
         }
+        document.addEventListener('DOMContentLoaded', type);
 
-        // Start typing animation
-        setTimeout(type, 1000);
-
-        // Mobile menu toggle
+        // Mobile menu
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.getElementById('navLinks');
-
         mobileMenuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
-
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
+        navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
             });
         });
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const offsetTop = target.offsetTop - 80;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+        // PDF Modal
+        const modal = document.getElementById('pdfModal');
+        const modalClose = document.getElementById('modalClose');
+        const pdfFrame = document.getElementById('pdfFrame');
 
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // PDF Modal Functions
-        function openPDF(filename) {
-            const modal = document.getElementById('pdfModal');
-            const viewer = document.getElementById('pdfViewer');
-            
-            // In production, replace with actual PDF path
-            viewer.src = `./pdfs/${filename}`;
+        function openPDF(src) {
+            pdfFrame.src = src;
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            const modal = document.getElementById('pdfModal');
-            const viewer = document.getElementById('pdfViewer');
-            
+        function closePDF() {
             modal.classList.remove('active');
-            viewer.src = '';
-            document.body.style.overflow = 'auto';
+            pdfFrame.src = '';
         }
 
-        function downloadPDF(filename) {
-            // In production, replace with actual PDF path
+        function downloadPDF(src) {
             const link = document.createElement('a');
-            link.href = `./pdfs/${filename}`;
-            link.download = filename;
+            link.href = src;
+            link.download = src.split('/').pop();
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
         }
 
-        // Close modal when clicking outside
-        document.getElementById('pdfModal').addEventListener('click', (e) => {
-            if (e.target.id === 'pdfModal') {
-                closeModal();
-            }
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Add scroll indicator fade out
-        window.addEventListener('scroll', () => {
-            const scrollIndicator = document.querySelector('.scroll-indicator');
-            if (scrollIndicator) {
-                const opacity = Math.max(0, 1 - (window.scrollY / 300));
-                scrollIndicator.style.opacity = opacity;
+        modalClose.addEventListener('click', closePDF);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closePDF();
             }
         });
     </script>
