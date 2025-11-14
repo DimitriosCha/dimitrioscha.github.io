@@ -174,9 +174,7 @@
         margin-bottom: 2.5rem;
         background: linear-gradient(135deg, var(--accent-warm), var(--accent-coral));
         padding: 5px;
-        box-shadow: 
-            0 20px 60px rgba(193, 125, 74, 0.25),
-            0 8px 20px rgba(193, 125, 74, 0.15);
+        /* box-shadow will be applied via the 'float' keyframe for animation */
         animation: float 6s ease-in-out infinite;
         position: relative;
     }
@@ -191,8 +189,22 @@
     }
     
     @keyframes float {
-        0%, 100% { transform: translateY(0px) scale(1); }
-        50% { transform: translateY(-15px) scale(1.02); }
+        0%, 100% { 
+            transform: translateY(0px) scale(1); 
+            /* Strong shadow when landing/at base level (Y=0) */
+            box-shadow: 
+                0 20px 60px rgba(193, 125, 74, 0.25), /* Existing Glow */
+                0 8px 20px rgba(193, 125, 74, 0.15),  /* Existing Glow */
+                0 30px 70px rgba(26, 22, 20, 0.4);   /* New Ground Shadow (Strong) */
+        }
+        50% { 
+            transform: translateY(-15px) scale(1.02); 
+            /* Weak shadow when levitating (Y=-15) */
+            box-shadow: 
+                0 20px 60px rgba(193, 125, 74, 0.25), /* Existing Glow */
+                0 8px 20px rgba(193, 125, 74, 0.15),  /* Existing Glow */
+                0 5px 10px rgba(26, 22, 20, 0.05);    /* New Ground Shadow (Weak) */
+        }
     }
     
     /* INNER CIRCLE THAT ACTUALLY CLIPS THE IMAGE */
