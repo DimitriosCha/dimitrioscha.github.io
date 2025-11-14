@@ -419,6 +419,8 @@
 
         .project-content {
             padding: 2.5rem;
+            position: relative; /* ADDED for absolute positioning of button */
+            padding-bottom: 6rem; /* INCREASED to make space for the button to appear */
         }
 
         .project-title {
@@ -445,6 +447,36 @@
             font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 0.02em;
+        }
+
+        /* NEW: Style for the inspect code button */
+        .inspect-code-btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: var(--accent-warm); 
+            color: var(--bg-primary); 
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            text-transform: uppercase;
+            
+            position: absolute; 
+            bottom: 2.5rem; 
+            left: 2.5rem; 
+            
+            opacity: 0; 
+            transform: translateY(15px); 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            box-shadow: 0 10px 20px rgba(193, 125, 74, 0.2);
+        }
+
+        /* NEW: Reveal the button on card hover */
+        .project-card:hover .inspect-code-btn {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .pdfs-grid {
@@ -921,9 +953,9 @@
                 <div class="project-content">
                     <h3 class="project-title">RPSLS Tournament</h3>
                     <p class="project-description">Opponent modeling strategies in tournament env</p>
-                    <span class="project-tag">
-                        <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="tag-link">Repository</a>
-                    </span>
+                    <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
+                        Inspect Code
+                    </a>
                 </div>
             </div>
             <div class="project-card">
