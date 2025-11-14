@@ -327,7 +327,7 @@
             overflow: hidden;
             backdrop-filter: blur(10px);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            position: relative; /* Essential for absolute positioning of button */
         }
 
         .project-card::before {
@@ -356,35 +356,18 @@
             display: inline-block;
             padding: 0.5rem 1rem;
             background: rgba(193, 125, 74, 0.12);
-            color: var(--accent-deep); /* This is the key color */
+            color: var(--accent-deep);
             border-radius: 8px;
             font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 0.02em;
         }
 
-        /* NEW: Styles the link (<a>) INSIDE the project tag */
-        .project-tag a.tag-link {
-            /* Fixes the appearance */
-            color: inherit; /* Makes the link text color match the parent tag (var(--accent-deep)) */
-            text-decoration: none; /* Removes the underline */
-            
-            /* Ensures proper click area inside the span/tag */
-            display: inline-block; 
-            padding: 0; 
-            /* You can add a subtle hover effect here if you like, e.g.: */
-            /* opacity: 1; transition: opacity 0.3s; */
-        }
-        
-        .project-tag a.tag-link:hover {
-            opacity: 0.85; /* Slight fade on hover for feedback */
-        }
+        /* Removed redundant .project-tag a.tag-link styles as the link is now a separate button */
 
         .project-thumbnail {
             width: 100%;
-            /* * OLD height: 220px; 
-             * NEW: Reduced height for a horizontally longer, modern look 
-             */
+            /* * NEW: Reduced height for a horizontally longer, modern look */
             height: 200px; 
             background: linear-gradient(135deg, rgba(232, 184, 154, 0.2), rgba(193, 125, 74, 0.15));
             display: flex;
@@ -394,8 +377,7 @@
             font-size: 0.9rem;
             position: relative;
             overflow: hidden;
-            /* * NEW: Added border-radius matching the project-card's top corners 
-             */
+            /* * NEW: Added border-radius matching the project-card's top corners */
             border-radius: 24px 24px 0 0; 
         }
 
@@ -410,17 +392,14 @@
         .project-thumbnail img {
             width: 100%;
             height: 100%;
-            /* * Ensures the image covers the shorter height without distortion. 
-             * Change to 'contain' if you want the full image visible with padding.
-             */
+            /* * Ensures the image covers the shorter height without distortion. */
             object-fit: cover; 
             display: block;
         }
 
+        /* Reverted .project-content to original padding */
         .project-content {
             padding: 2.5rem;
-            position: relative; /* ADDED for absolute positioning of button */
-            padding-bottom: 6rem; /* INCREASED to make space for the button to appear */
         }
 
         .project-title {
@@ -438,17 +417,6 @@
             line-height: 1.7;
         }
 
-        .project-tag {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(193, 125, 74, 0.12);
-            color: var(--accent-deep);
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-        }
-
         /* NEW: Style for the inspect code button */
         .inspect-code-btn {
             display: inline-block;
@@ -462,21 +430,27 @@
             text-decoration: none;
             text-transform: uppercase;
             
+            /* Positioning relative to .project-card */
             position: absolute; 
-            bottom: 2.5rem; 
-            left: 2.5rem; 
+            left: 50%; 
+            bottom: 0; /* Starts right at the bottom edge */
             
-            opacity: 0; 
-            transform: translateY(15px); 
+            /* Initial state: Hidden below the card (or just touching the bottom edge) */
+            transform: translate(-50%, 100%); /* Slide down 100% of its own height to hide it below the card border */
+            opacity: 0; /* Completely hidden */
+            
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             
             box-shadow: 0 10px 20px rgba(193, 125, 74, 0.2);
+            z-index: 5;
         }
 
         /* NEW: Reveal the button on card hover */
         .project-card:hover .inspect-code-btn {
             opacity: 1;
-            transform: translateY(0);
+            /* Slides up from below the card to be centered 25px from the bottom edge */
+            transform: translate(-50%, 0); 
+            bottom: 25px; 
         }
 
         .pdfs-grid {
@@ -953,10 +927,10 @@
                 <div class="project-content">
                     <h3 class="project-title">RPSLS Tournament</h3>
                     <p class="project-description">Opponent modeling strategies in tournament env</p>
-                    <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
-                        Inspect Code
-                    </a>
                 </div>
+                <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
+                    Inspect Code
+                </a>
             </div>
             <div class="project-card">
                 <div class="project-thumbnail">[project thumbnail]</div>
