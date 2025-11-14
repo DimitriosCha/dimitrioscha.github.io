@@ -351,6 +351,34 @@
                 0 12px 30px rgba(193, 125, 74, 0.1);
         }
 
+        /* This is the existing tag style you like: */
+        .project-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(193, 125, 74, 0.12);
+            color: var(--accent-deep); /* This is the key color */
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        /* NEW: Styles the link (<a>) INSIDE the project tag */
+        .project-tag a.tag-link {
+            /* Fixes the appearance */
+            color: inherit; /* Makes the link text color match the parent tag (var(--accent-deep)) */
+            text-decoration: none; /* Removes the underline */
+            
+            /* Ensures proper click area inside the span/tag */
+            display: inline-block; 
+            padding: 0; 
+            /* You can add a subtle hover effect here if you like, e.g.: */
+            /* opacity: 1; transition: opacity 0.3s; */
+        }
+        
+        .project-tag a.tag-link:hover {
+            opacity: 0.85; /* Slight fade on hover for feedback */
+        }
 
         .project-thumbnail {
             width: 100%;
