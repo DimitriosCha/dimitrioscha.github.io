@@ -351,7 +351,6 @@
                 0 12px 30px rgba(193, 125, 74, 0.1);
         }
 
-        /* This is the existing tag style you like: */
         .project-tag {
             display: inline-block;
             padding: 0.5rem 1rem;
@@ -363,11 +362,8 @@
             letter-spacing: 0.02em;
         }
 
-        /* Removed redundant .project-tag a.tag-link styles as the link is now a separate button */
-
         .project-thumbnail {
             width: 100%;
-            /* * NEW: Reduced height for a horizontally longer, modern look */
             height: 200px; 
             background: linear-gradient(135deg, rgba(232, 184, 154, 0.2), rgba(193, 125, 74, 0.15));
             display: flex;
@@ -377,7 +373,6 @@
             font-size: 0.9rem;
             position: relative;
             overflow: hidden;
-            /* * NEW: Added border-radius matching the project-card's top corners */
             border-radius: 24px 24px 0 0; 
         }
 
@@ -388,16 +383,13 @@
             background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent);
         }
         
-        /* NEW: Added styling for images within the thumbnail */
         .project-thumbnail img {
             width: 100%;
             height: 100%;
-            /* * Ensures the image covers the shorter height without distortion. */
             object-fit: cover; 
             display: block;
         }
 
-        /* Reverted .project-content to original padding */
         .project-content {
             padding: 2.5rem;
         }
@@ -417,7 +409,7 @@
             line-height: 1.7;
         }
 
-        /* NEW: Style for the inspect code button */
+        /* Style for the inspect code button */
         .inspect-code-btn {
             display: inline-block;
             padding: 0.6rem 1.2rem;
@@ -435,9 +427,9 @@
             left: 50%; 
             bottom: 0; /* Starts right at the bottom edge */
             
-            /* Initial state: Hidden below the card (or just touching the bottom edge) */
-            transform: translate(-50%, 100%); /* Slide down 100% of its own height to hide it below the card border */
-            opacity: 0; /* Completely hidden */
+            /* Initial state: Hidden below the card */
+            transform: translate(-50%, 100%); 
+            opacity: 0; 
             
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             
@@ -445,10 +437,10 @@
             z-index: 5;
         }
 
-        /* NEW: Reveal the button on card hover */
+        /* Reveal the button on card hover */
         .project-card:hover .inspect-code-btn {
             opacity: 1;
-            /* Slides up from below the card to be centered 25px from the bottom edge */
+            /* Slides up to be centered 25px from the bottom edge */
             transform: translate(-50%, 0); 
             bottom: 25px; 
         }
@@ -464,6 +456,7 @@
             border: 1px solid var(--border-subtle);
             border-radius: 20px;
             padding: 2.5rem;
+            padding-bottom: 6rem; /* INCREASED to make space for the button to slide up */
             backdrop-filter: blur(10px);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
@@ -540,15 +533,30 @@
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
+            
+            /* ADDED: Hover-to-reveal positioning */
+            position: absolute; 
+            left: 50%;
+            bottom: 0;
+            transform: translate(-50%, 100%);
+            opacity: 0;
+            
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
         }
 
         .pdf-download-btn:hover {
             background: rgba(193, 125, 74, 0.25);
             border-color: var(--accent-warm);
-            transform: translateY(-2px);
+            transform: translate(-50%, -2px); /* Slight lift on hover while staying centered */
+        }
+        
+        /* ADDED: Reveal the button on card hover */
+        .pdf-card:hover .pdf-download-btn {
+            opacity: 1;
+            /* Slides up to be centered 25px from the bottom edge */
+            transform: translate(-50%, 0); 
+            bottom: 25px; 
         }
 
         .books-section {
@@ -932,21 +940,27 @@
                     Inspect Code
                 </a>
             </div>
+            
             <div class="project-card">
                 <div class="project-thumbnail">[project thumbnail]</div>
                 <div class="project-content">
                     <h3 class="project-title">Agentic Workflows</h3>
                     <p class="project-description">tool-using LLMs, reasoning, and self-improving systems</p>
-                    <span class="project-tag">AI Systems</span>
                 </div>
+                <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
+                    Inspect Code
+                </a>
             </div>
+            
             <div class="project-card">
                 <div class="project-thumbnail">[project thumbnail]</div>
                 <div class="project-content">
                     <h3 class="project-title">Product & Architecture Notes</h3>
                     <p class="project-description">frameworks for turning ambiguous problem spaces into shippable systems</p>
-                    <span class="project-tag">Product Strategy</span>
                 </div>
+                <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
+                    Inspect Code
+                </a>
             </div>
         </div>
     </section>
@@ -962,19 +976,21 @@
                 ↓ Download PDF
                 </a>
             </div>
-            <div class="pdf-card" onclick="openPDF('ai_agents_notes.pdf')">
+            
+            <div class="pdf-card" onclick="openPDF('CSC_370_HW_3.pdf')">
                 <div class="pdf-icon">📄</div>
                 <h3 class="pdf-title">Notes on Agentic Systems</h3>
                 <p class="pdf-subtitle">AI Reasoning & Tool Use</p>
-                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('ai_agents_notes.pdf')">
+                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('RPSLS-Oponent-Modeling.pdf')">
                     ↓ Download PDF
                 </a>
             </div>
-            <div class="pdf-card" onclick="openPDF('product_frameworks.pdf')">
+            
+            <div class="pdf-card" onclick="openPDF('CSC_370_HW_3.pdf')">
                 <div class="pdf-icon">📄</div>
                 <h3 class="pdf-title">Product Frameworks for Hard Problems</h3>
                 <p class="pdf-subtitle">Systems Thinking & Architecture</p>
-                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('product_frameworks.pdf')">
+                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('RPSLS-Oponent-Modeling.pdf')">
                     ↓ Download PDF
                 </a>
             </div>
@@ -1113,9 +1129,9 @@
             navLinks.classList.toggle('active');
         });
         
-        // --- THIS WAS THE BUGGY LINE ---
+        // --- Fixed Mobile Menu Bug ---
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => { // Fixed: Removed the stray 'F'
+            link.addEventListener('click', () => { 
                 navLinks.classList.remove('active');
             });
         });
