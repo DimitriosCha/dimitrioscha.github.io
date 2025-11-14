@@ -31,6 +31,14 @@
             --text-primary-soft: #3a2f29;
         }
 
+        /* --- NEW: Smooth Scroll CSS --- */
+        html {
+            /* This tells the browser to smoothly scroll for all hash links */
+            scroll-behavior: smooth;
+            /* This adds padding so the title isn't hidden by the fixed nav */
+            scroll-padding-top: 8rem; 
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro', sans-serif;
             background: var(--bg-primary);
@@ -243,6 +251,7 @@
             font-size: 1.2rem;
             color: var(--accent-warm);
             font-weight: 500;
+            /* min-width: 280px; <- This was the problem */
         }
 
         .typing-cursor {
@@ -824,8 +833,7 @@
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="hero-image-container">
+    <section class="hero" id="hero"> <div class="hero-image-container">
             <div class="hero-image">
               <img src="Dimi-Git.jpg" alt="Portrait of me">
             </div>
@@ -1050,7 +1058,7 @@
             navLinks.classList.toggle('active');
         });
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', ()F => {
                 navLinks.classList.remove('active');
             });
         });
@@ -1085,6 +1093,27 @@
                 closePDF();
             }
         });
+
+        // --- NEW: Smooth Scroll ---
+        // This JS is technically redundant if `scroll-behavior: smooth;` works,
+        // but it provides a fallback and more control.
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); // Stop the default "jump"
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    // We use scrollIntoView for a reliable block-start alignment
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
     </script>
 </body>
 </html>
