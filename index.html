@@ -311,10 +311,51 @@
             line-height: 1.9;
             max-width: 100%;
             text-align: center;
+            position: relative;
         }
-
+        
         .about-description p {
             margin-bottom: 1.2rem;
+        }
+        
+        .about-description::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 40%;
+            height: 120%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(232, 184, 154, 0.5) 0%,
+                rgba(193, 125, 74, 0.4) 30%,
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: 10;
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        
+        .about-description.shine::before {
+            animation: shineSweep 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        
+        @keyframes shineSweep {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(250%);
+                opacity: 0;
+            }
         }
 
         .projects-grid {
@@ -1009,7 +1050,7 @@
                 <div>▹ i believe 0s & 1s > english</div>
             </div>
             <div class="about-description">
-                <p>i build systems that make intelligence usable — for humans, for agents, and for the teams shaping the next wave of ai my career has been a cycle of curiosity → experimentation → delivery, moving from data engineering to product r&d and management to AI evaluation strategy because growth has always mattered more than titles. i work where ambiguity lives: designing experiments with frontier labs, architecting workflows, and turning complex ideas into tools people actually use. i care about clarity, craft, and momentum — building, breaking, and rebuilding until the thing is better than before. mostly, i’m just trying to understand how humans think, how machines learn, and how to design workflows that make both a little more aligned. and somewhere along that path, I moved across 3 continents, to lead teams, build products, learn cultures and grow...</p>
+                <p>i build systems that make intelligence usable — for humans, for agents, and for the teams shaping the next wave of ai my career has been a cycle of curiosity → experimentation → delivery, moving from data engineering to product r&d and management to AI evaluation strategy because growth has always mattered more than titles. i work where ambiguity lives: designing experiments with frontier labs, architecting workflows, and turning complex ideas into tools people actually use. i care about clarity, craft, and momentum — building, breaking, and rebuilding until the thing is better than before. mostly, i'm just trying to understand how humans think, how machines learn, and how to design workflows that make both a little more aligned. and somewhere along that path, I moved across 3 continents, to lead teams, build products, learn cultures and grow...</p>
             </div>
         </div>
     </section>
@@ -1157,10 +1198,9 @@
             { title: "the republic", description: "i mean, come on… i'm Greek!" },
             { title: "meditations", description: "discipline, robust inner architecture" },
             { title: "the myth of sisyphus", description: "choosing meaning in the absurd" },
-            { title: "nicomachean ethics", description: "again... i am Greek" },
+            { title: "the design of everyday things", description: "usability as architecture, anti-patterns in product" },
             { title: "thinking, fast and slow", description: "cognitive biases in strategy & decision making" },
-            { title: "radical candor", description: "honesty + care for better leadership" },
-            { title: "atomic habits", description: "tiny habits, massive long-term change" }
+            { title: "sapiens: a brief history of humankind", description: "long-term systems, narrative, and human cooperation" }
         ];
 
         const ITEMS_PER_PAGE = 9; // 3x3 grid
