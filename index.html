@@ -30,7 +30,6 @@
             --text-primary-soft: #3a2f29;
         }
 
-        /* --- Smooth Scroll CSS --- */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 8rem; 
@@ -163,17 +162,14 @@
             position: relative;
         }
     
-        /* OUTER RING + GLOW */
         .hero-image-container {
             width: clamp(190px, 28vw, 230px);
             height: clamp(190px, 28vw, 230px);
             border-radius: 50%;
-            /* let the glow breathe outside the circle */
             overflow: visible;
             margin-bottom: 2.5rem;
             background: linear-gradient(135deg, var(--accent-warm), var(--accent-coral));
             padding: 5px;
-            /* box-shadow will be applied via the 'float' keyframe for animation */
             animation: float 6s ease-in-out infinite;
             position: relative;
         }
@@ -191,24 +187,19 @@
             0%, 100% { 
                 transform: translateY(0px) scale(1); 
                 box-shadow: 
-                    /* Self Glow */
                     0 20px 60px rgba(193, 125, 74, 0.25), 
                     0 8px 20px rgba(193, 125, 74, 0.15),
-                    /* Ground Shadow: Large offset (50px), large blur (60px), dark/high opacity (0.35) */
                     0 50px 60px rgba(26, 22, 20, 0.35);   
             }
             50% { 
                 transform: translateY(-15px) scale(1.02); 
                 box-shadow: 
-                    /* Self Glow */
                     0 20px 60px rgba(193, 125, 74, 0.25), 
                     0 8px 20px rgba(193, 125, 74, 0.15),
-                    /* Ground Shadow: Minimized offset (2px), tiny blur (2px), nearly transparent (0.01) */
                     0 2px 2px rgba(26, 22, 20, 0.01);    
             }
         }
     
-        /* INNER CIRCLE THAT ACTUALLY CLIPS THE IMAGE */
         .hero-image {
             width: 100%;
             height: 100%;
@@ -219,16 +210,15 @@
             justify-content: center;
             color: var(--text-tertiary);
             font-size: 0.9rem;
-            overflow: hidden; /* important: clipping happens here */
+            overflow: hidden;
             background-color: #E4CEB4;
         }
     
-        /* IMAGE ITSELF */
         .hero-image img {
             width: 100%;
             height: 100%;
-            object-fit: contain;      /* show full image */
-            object-position: center bottom;  /* keep it centered */
+            object-fit: contain;
+            object-position: center bottom;
             display: block;
         }
         
@@ -339,7 +329,7 @@
             overflow: hidden;
             backdrop-filter: blur(10px);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; /* Essential for absolute positioning of button */
+            position: relative;
         }
 
         .project-card::before {
@@ -421,7 +411,6 @@
             line-height: 1.7;
         }
 
-        /* Style for the inspect code button */
         .inspect-code-btn {
             display: inline-block;
             padding: 0.6rem 1.2rem;
@@ -433,26 +422,18 @@
             letter-spacing: 0.02em;
             text-decoration: none;
             text-transform: uppercase;
-            
-            /* Positioning relative to .project-card */
             position: absolute; 
             left: 50%; 
-            bottom: 0; /* Starts right at the bottom edge */
-            
-            /* Initial state: Hidden below the card */
+            bottom: 0;
             transform: translate(-50%, 100%); 
             opacity: 0; 
-            
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            
             box-shadow: 0 10px 20px rgba(193, 125, 74, 0.2);
             z-index: 5;
         }
 
-        /* Reveal the button on card hover */
         .project-card:hover .inspect-code-btn {
             opacity: 1;
-            /* Slides up to be centered 22px from the bottom edge */
             transform: translate(-50%, 0); 
             bottom: 22px; 
         }
@@ -468,7 +449,7 @@
             border: 1px solid var(--border-subtle);
             border-radius: 20px;
             padding: 2.5rem;
-            padding-bottom: 6rem; /* INCREASED to make space for the button to slide up */
+            padding-bottom: 6rem;
             backdrop-filter: blur(10px);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
@@ -545,14 +526,11 @@
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 600;
-            
-            /* ADDED: Hover-to-reveal positioning */
             position: absolute; 
             left: 50%;
             bottom: 0;
             transform: translate(-50%, 100%);
             opacity: 0;
-            
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 5;
         }
@@ -560,13 +538,11 @@
         .pdf-download-btn:hover {
             background: rgba(193, 125, 74, 0.25);
             border-color: var(--accent-warm);
-            transform: translate(-50%, -2px); /* Slight lift on hover while staying centered */
+            transform: translate(-50%, -2px);
         }
         
-        /* ADDED: Reveal the button on card hover */
         .pdf-card:hover .pdf-download-btn {
             opacity: 1;
-            /* Slides up to be centered 25px from the bottom edge */
             transform: translate(-50%, 0); 
             bottom: 25px; 
         }
@@ -601,78 +577,63 @@
             opacity: 0.7;
         }
         
-        /* Wrapper for horizontal scrolling and snapping */
         .books-viewport {
-            overflow-x: scroll;
+            overflow-x: auto;
+            overflow-y: hidden;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
-            margin-bottom: 2.5rem; /* Space for pagination dots */
-            /* Hide scrollbar visually */
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none; /* IE and Edge */
-        }
-        .books-viewport::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
-
-        /* Main container for pages - must be flex to lay pages side-by-side */
-        .books-grid {
-            display: flex;
-            gap: 1.2rem; /* Gap between pages */
-            width: max-content; /* Ensure the flex container is wide enough for all pages */
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 2.5rem;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
         
-        /* The book page container */
+        .books-viewport::-webkit-scrollbar {
+            display: none;
+        }
+
+        .books-grid {
+            display: flex;
+            gap: 0;
+        }
+        
         .book-page {
             flex: 0 0 100%; 
             width: 100%; 
             scroll-snap-align: start; 
-            
             display: grid;
-            /* Default to 3 columns, will be overridden by media query */
             grid-template-columns: repeat(3, 1fr); 
             grid-template-rows: repeat(3, 1fr); 
             gap: 1.2rem;
-            /* Aggressive Height Reduction: Set a fixed maximum height for the grid container */
-            max-height: 380px; 
-        }
-        
-        /* AGGRESSIVE WIDTH REDUCTION FOR DESKTOP */
-        @media (min-width: 992px) {
-             .book-page {
-                /* FORCE 4 COLUMNS on large screens to make cards narrower */
-                grid-template-columns: repeat(4, 1fr); 
-            }
+            padding: 0 0.2rem;
         }
         
         .book-item {
-            /* Final aggressive padding reduction */
-            padding: 0.6rem 0.9rem; 
+            padding: 1.2rem 1.5rem; 
             background: rgba(255, 255, 255, 0.5);
-            border-radius: 12px; 
+            border-radius: 16px; 
             border: 1px solid rgba(193, 125, 74, 0.15);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
-        /* Ensure the title and description don't add too much vertical space */
         .book-title {
-            /* Smaller text */
-            font-size: 0.9rem; 
+            font-size: 1rem; 
             font-weight: 600;
-            /* Tighter margin */
-            margin-bottom: 0.3rem; 
+            margin-bottom: 0.5rem; 
             color: var(--text-primary);
             line-height: 1.3;
+            letter-spacing: -0.01em;
         }
 
         .book-description {
-            /* Significantly smaller description text */
-            font-size: 0.75rem; 
+            font-size: 0.85rem; 
             color: var(--text-tertiary);
             font-style: italic;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .book-item::before {
@@ -699,7 +660,6 @@
             box-shadow: 0 8px 20px rgba(193, 125, 74, 0.1);
         }
 
-        /* Pagination Dots Styling */
         .pagination-dots {
             display: flex;
             justify-content: center;
@@ -710,7 +670,7 @@
         .dot {
             width: 10px;
             height: 10px;
-            background: rgba(193, 125, 74, 0.3); /* Muted warm color */
+            background: rgba(193, 125, 74, 0.3);
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -722,7 +682,7 @@
         }
 
         .dot.active {
-            background: var(--accent-warm); /* Full warm color */
+            background: var(--accent-warm);
             border-color: var(--accent-deep);
             transform: scale(1.2);
         }
@@ -922,10 +882,9 @@
                 padding: 2.5rem 2rem;
             }
             
-            /* On mobile, only 1 item per row, still short */
             .book-page {
                 grid-template-columns: 1fr;
-                max-height: none; /* Allow vertical stacking on mobile */
+                grid-template-rows: auto;
             }
         }
 
@@ -964,7 +923,7 @@
 
     <nav>
         <div class="nav-container">
-            <div class="nav-logo">build ‧ fail ‧ repeat</div>
+            <div class="nav-logo">build · fail · repeat</div>
             <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about">about</a></li>
@@ -1058,7 +1017,7 @@
     <section id="writing">
         <h2>writing & papers</h2>
         <div class="pdfs-grid">
-            <div class="pdf-card" onclick="openPDF('CSC_370_HW_3.pdf')">
+            <div class="pdf-card" onclick="openPDF('documents/RPSLS-Oponent-Modeling.pdf')">
                 <div class="pdf-icon">📄</div>
                 <h3 class="pdf-title">rpsls tournament</h3>
                 <p class="pdf-subtitle">opponent modeling using game theory, markov chains, no-regret algorithms</p>
@@ -1067,7 +1026,7 @@
                 </a>
             </div>
             
-            <div class="pdf-card" onclick="openPDF('CSC_370_HW_3.pdf')">
+            <div class="pdf-card" onclick="openPDF('documents/Symbolic-Regression.pdf')">
                 <div class="pdf-icon">📄</div>
                 <h3 class="pdf-title">symbolic regression</h3>
                 <p class="pdf-subtitle">genetic programmic in the context of symbolic regression</p>
@@ -1076,11 +1035,11 @@
                 </a>
             </div>
             
-            <div class="pdf-card" onclick="openPDF('CSC_370_HW_3.pdf')">
+            <div class="pdf-card" onclick="openPDF('documents/product-frameworks.pdf')">
                 <div class="pdf-icon">📄</div>
                 <h3 class="pdf-title">product frameworks for hard problems</h3>
                 <p class="pdf-subtitle">systems thinking & architecture</p>
-                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('RPSLS-Oponent-Modeling.pdf')">
+                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('documents/product-frameworks.pdf')">
                     ↓ Download PDF
                 </a>
             </div>
@@ -1089,63 +1048,15 @@
 
     <section id="books">
         <div class="books-section">
-            <div class="binary-header"><span style="font-size: 1.2rem;">📚</span> 01110010‧01100101‧01100001‧01100100‧01110100‧01101000‧01100101‧01101101</div>
+            <div class="binary-header"><span style="font-size: 1.2rem;">📚</span> 01110010·01100101·01100001·01100100·01110100·01101000·01100101·01101101</div>
             <h2 style="margin-bottom: 2.5rem;">the ideas that built me</h2>
             
             <div class="books-viewport" id="booksViewport"> 
                 <div class="books-grid" id="booksGrid">
-                    
-                    <div class="book-page">
-                        <div class="book-item">
-                            <div class="book-title">the technological republic</div>
-                            <div class="book-description">cause… edgy, why not</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">zero to one</div>
-                            <div class="book-description">nonlinear thinking, contrarian creation</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">disciplined entrepreneurship</div>
-                            <div class="book-description">but can it be taught (?)</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">the art of war</div>
-                            <div class="book-description">strategy as psychology, war & business (?)</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">the prince</div>
-                            <div class="book-description">incentives, influence, realpolitik</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">the republic</div>
-                            <div class="book-description">i mean, come on… i'm Greek!</div>
-                        </div>
-                         <div class="book-item">
-                            <div class="book-title">meditations</div>
-                            <div class="book-description">discipline, robust inner architecture</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">the myth of sisyphus</div>
-                            <div class="book-description">choosing meaning in the absurd</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">the design of everyday things</div>
-                            <div class="book-description">usability as architecture, anti-patterns in product</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">thinking, fast and slow</div>
-                            <div class="book-description">cognitive biases in strategy & decision making</div>
-                        </div>
-                        <div class="book-item">
-                            <div class="book-title">sapiens: a brief history of humankind</div>
-                            <div class="book-description">long-term systems, narrative, and human cooperation</div>
-                        </div>
-                        </div>
-                    
+                    <!-- Pages will be dynamically created by JavaScript -->
                 </div>
             </div>
-            <div class="pagination-dots" id="paginationDots">
-                </div>
+            <div class="pagination-dots" id="paginationDots"></div>
         </div>
     </section>
 
@@ -1192,6 +1103,113 @@
     </div>
 
     <script>
+        // All book data
+        const allBooks = [
+            { title: "the technological republic", description: "cause… edgy, why not" },
+            { title: "zero to one", description: "nonlinear thinking, contrarian creation" },
+            { title: "disciplined entrepreneurship", description: "but can it be taught (?)" },
+            { title: "the art of war", description: "strategy as psychology, war & business (?)" },
+            { title: "the prince", description: "incentives, influence, realpolitik" },
+            { title: "the republic", description: "i mean, come on… i'm Greek!" },
+            { title: "meditations", description: "discipline, robust inner architecture" },
+            { title: "the myth of sisyphus", description: "choosing meaning in the absurd" },
+            { title: "the design of everyday things", description: "usability as architecture, anti-patterns in product" },
+            { title: "thinking, fast and slow", description: "cognitive biases in strategy & decision making" },
+            { title: "sapiens: a brief history of humankind", description: "long-term systems, narrative, and human cooperation" }
+        ];
+
+        const ITEMS_PER_PAGE = 9; // 3x3 grid
+        const totalPages = Math.ceil(allBooks.length / ITEMS_PER_PAGE);
+        let currentPage = 0;
+        let isScrolling = false;
+
+        // Create all pages with books
+        function initializeBooks() {
+            const booksGrid = document.getElementById('booksGrid');
+            const dotsContainer = document.getElementById('paginationDots');
+            
+            // Create pages
+            for (let pageIndex = 0; pageIndex < totalPages; pageIndex++) {
+                const page = document.createElement('div');
+                page.classList.add('book-page');
+                
+                const startIdx = pageIndex * ITEMS_PER_PAGE;
+                const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, allBooks.length);
+                
+                for (let i = startIdx; i < endIdx; i++) {
+                    const book = allBooks[i];
+                    const bookItem = document.createElement('div');
+                    bookItem.classList.add('book-item');
+                    bookItem.innerHTML = `
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-description">${book.description}</div>
+                    `;
+                    page.appendChild(bookItem);
+                }
+                
+                booksGrid.appendChild(page);
+            }
+            
+            // Create dots
+            for (let i = 0; i < totalPages; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToPage(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function goToPage(pageIndex) {
+            if (pageIndex < 0 || pageIndex >= totalPages || isScrolling) return;
+            
+            currentPage = pageIndex;
+            isScrolling = true;
+            
+            const viewport = document.getElementById('booksViewport');
+            const targetScroll = viewport.clientWidth * pageIndex;
+            
+            viewport.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+            
+            updateDots();
+            
+            setTimeout(() => {
+                isScrolling = false;
+            }, 600);
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentPage);
+            });
+        }
+
+        // Handle manual scrolling
+        let scrollTimeout;
+        document.getElementById('booksViewport').addEventListener('scroll', function() {
+            if (isScrolling) return;
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const viewport = this;
+                const scrollLeft = viewport.scrollLeft;
+                const pageWidth = viewport.clientWidth;
+                const newPage = Math.round(scrollLeft / pageWidth);
+                
+                if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
+                    currentPage = newPage;
+                    updateDots();
+                }
+            }, 100);
+        });
+
+        // Initialize books on page load
+        initializeBooks();
+
         // Typing effect
         const typingElement = document.getElementById('typingText');
         const phrases = [
@@ -1222,12 +1240,12 @@
             let typeSpeed = isDeleting ? 75 : 150;
 
             if (!isDeleting && charIndex === currentPhrase.length) {
-                typeSpeed = 2000; // Pause at end of phrase
+                typeSpeed = 2000;
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 phraseIndex = (phraseIndex + 1) % phrases.length;
-                typeSpeed = 500; // Pause before new phrase
+                typeSpeed = 500;
             }
 
             setTimeout(type, typeSpeed);
@@ -1241,7 +1259,6 @@
             navLinks.classList.toggle('active');
         });
         
-        // --- Fixed Mobile Menu Bug ---
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => { 
                 navLinks.classList.remove('active');
@@ -1279,7 +1296,7 @@
             }
         });
 
-        // --- Smooth Scroll ---
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault(); 
@@ -1295,143 +1312,6 @@
                 }
             });
         });
-
-        // --- BOOK PAGINATION LOGIC (Horizontal Scroll & Snap) ---
-        const booksViewport = document.getElementById('booksViewport'); // The scroll container
-        const dotsContainer = document.getElementById('paginationDots');
-        // Select all items, not just pages, to calculate visibility
-        const allBookItems = document.querySelectorAll('.book-item'); 
-        let currentPage = 0;
-        let isScrollingProgrammatically = false; 
-        
-        // Determine the number of columns and rows based on the media query for the current view.
-        // For simplicity, we assume the desktop view (4x3 = 12 items/page) will be the most common scroll view.
-        // We set a fixed items-per-page for the JS logic, and rely on CSS for the layout.
-        const itemsPerPage = 12; // 4 columns * 3 rows
-        const totalItems = allBookItems.length;
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-
-        function updateDots(pageIndex) {
-            dotsContainer.querySelectorAll('.dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === pageIndex);
-            });
-        }
-
-        function showPage(pageIndex) {
-            if (pageIndex < 0 || pageIndex >= totalPages) return;
-            
-            currentPage = pageIndex;
-            isScrollingProgrammatically = true; 
-            
-            // Calculate the required scroll position. 
-            // Since we use the CSS trick of forcing all items into one single .book-page, 
-            // the totalPages calculated here needs to be reflected in the horizontal scroll amount.
-            // We need to find the element that is at the start of that page range.
-            
-            // To simplify, since we've changed the HTML structure to use multiple `.book-page` elements 
-            // side-by-side inside the `.books-grid` (which uses flex and `width: max-content`), 
-            // we will go back to the element selection.
-            
-            // Re-select pages to ensure we use the correct structure
-            const bookPages = booksViewport.querySelectorAll('.book-page');
-            
-            // Check if the page we are trying to scroll to exists
-            if(bookPages.length > pageIndex) {
-                const pageToScrollTo = bookPages[pageIndex];
-                
-                // Use scroll to navigate horizontally
-                booksViewport.scrollTo({
-                    left: pageToScrollTo.offsetLeft,
-                    behavior: 'smooth'
-                });
-            } else {
-                 // Fallback: If only one page (length 1), the offset is 0. 
-                 booksViewport.scrollTo({
-                    left: 0,
-                    behavior: 'smooth'
-                });
-            }
-            
-            updateDots(pageIndex);
-            
-            // Allow manual scroll events again after the smooth scroll completes
-            setTimeout(() => {
-                isScrollingProgrammatically = false;
-            }, 500); 
-        }
-        
-        function renderDots() {
-            dotsContainer.innerHTML = ''; // Clear existing dots
-            
-            // Since the HTML has a single .book-page element, we need to manually create
-            // more .book-page elements if the book count exceeds 12, or the horizontal scroll
-            // will not function correctly with the CSS snap logic.
-            
-            // **New logic: Dynamically restructure the DOM for correct snapping**
-            const booksGrid = document.getElementById('booksGrid');
-            const bookItems = Array.from(allBookItems);
-            booksGrid.innerHTML = ''; // Clear the current single page
-
-            // Create pages and append items
-            for (let i = 0; i < totalPages; i++) {
-                const page = document.createElement('div');
-                page.classList.add('book-page');
-
-                const start = i * itemsPerPage;
-                const end = start + itemsPerPage;
-                const itemsForPage = bookItems.slice(start, end);
-
-                itemsForPage.forEach(item => page.appendChild(item));
-                booksGrid.appendChild(page);
-            }
-            // End DOM restructure
-
-            // Now, create the dots based on the new totalPages
-            for (let i = 0; i < totalPages; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                dot.classList.toggle('active', i === currentPage);
-                dot.dataset.page = i;
-                dot.addEventListener('click', (e) => {
-                    const page = parseInt(e.target.dataset.page);
-                    showPage(page); // Page switching is now purely horizontal
-                });
-                dotsContainer.appendChild(dot);
-            }
-        }
-
-        // Event listener for manual horizontal scroll/swipe to update dots
-        booksViewport.addEventListener('scroll', () => {
-            if (isScrollingProgrammatically) return; 
-
-            // Find the page currently snapped into view
-            const scrollLeft = booksViewport.scrollLeft;
-            const viewportWidth = booksViewport.clientWidth;
-            
-            // The logic to find the current page: divide scroll position by page width
-            // Rounding to the nearest integer helps with scroll snapping
-            const newPageIndex = Math.round(scrollLeft / viewportWidth);
-            
-            // If the page actually changed, update the active dot
-            if (newPageIndex !== currentPage && newPageIndex < totalPages) {
-                currentPage = newPageIndex;
-                updateDots(currentPage);
-            }
-        });
-
-
-        // Initialize pagination
-        if (totalItems > itemsPerPage) { 
-            // If more items than fit on one page (12), we need multiple pages/dots
-            renderDots();
-            showPage(0); 
-        } else {
-             // If only one page (11 items fit in 12 slots), ensure one dot is active and visible
-             const dot = document.createElement('div');
-             dot.classList.add('dot', 'active');
-             dotsContainer.appendChild(dot);
-        }
     </script>
 </body>
 </html>
