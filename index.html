@@ -161,13 +161,40 @@
             padding-top: 8rem;
             position: relative;
         }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 43.5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 15px;
+            background: radial-gradient(ellipse at center, rgba(107, 93, 82, 0.7) 0%, rgba(107, 93, 82, 0.4) 40%, transparent 70%);
+            filter: blur(10px);
+            border-radius: 50%;
+            animation: floorShadow 6s ease-in-out infinite;
+        }
+        
+        @keyframes floorShadow {
+            0%, 100% {
+                opacity: 0.9;
+                transform: translateX(-50%) scaleX(1.2);
+                filter: blur(8px);
+            }
+            50% {
+                opacity: 0.4;
+                transform: translateX(-50%) scaleX(0.7);
+                filter: blur(15px);
+            }
+        }
     
         .hero-image-container {
             width: clamp(190px, 28vw, 230px);
             height: clamp(190px, 28vw, 230px);
             border-radius: 50%;
             overflow: visible;
-            margin-bottom: 2.5rem;
+            margin-bottom: 4rem;
             background: linear-gradient(135deg, var(--accent-warm), var(--accent-coral));
             padding: 5px;
             animation: float 6s ease-in-out infinite;
@@ -178,7 +205,7 @@
             content: '';
             position: absolute;
             inset: -20px;
-            background: radial-gradient(circle, rgba(232, 184, 154, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(232, 184, 154, 0.15) 0%, transparent 70%);
             border-radius: 50%;
             z-index: -1;
         }
@@ -189,7 +216,7 @@
                 box-shadow: 
                     0 20px 60px rgba(193, 125, 74, 0.25), 
                     0 8px 20px rgba(193, 125, 74, 0.15),
-                    0 50px 60px rgba(26, 22, 20, 0.35);   
+                    0 50px 60px rgba(26, 22, 20, 0.10);   
             }
             50% { 
                 transform: translateY(-15px) scale(1.02); 
@@ -450,7 +477,7 @@
             font-weight: 600;
             letter-spacing: 0.02em;
             text-decoration: none;
-            text-transform: lowercase;
+            text-transform: uppercase;
             position: absolute; 
             left: 50%; 
             bottom: 0;
@@ -464,7 +491,7 @@
         .project-card:hover .inspect-code-btn {
             opacity: 1;
             transform: translate(-50%, 0); 
-            bottom: 20px; 
+            bottom: 22px; 
         }
 
         .pdfs-grid {
@@ -1028,6 +1055,7 @@
 
     <section id="about">
         <h2>a little about me</h2>
+        <button onclick="document.querySelector('.about-description').classList.add('shine'); setTimeout(() => document.querySelector('.about-description').classList.remove('shine'), 6000);" style="padding: 10px 20px; margin-bottom: 20px; background: var(--accent-warm); color: white; border: none; border-radius: 8px; cursor: pointer;">Test Shine Effect</button>
         <div class="about-content">
             <div class="principles-list">
                 <div>▹ i read, learn, build, and interact with intention</div>
@@ -1054,7 +1082,7 @@
                     <p class="project-description">opponent modeling strategies in tournament env</p>
                 </div>
                 <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
-                    inspect code
+                    Inspect Code
                 </a>
             </div>
             
@@ -1067,20 +1095,7 @@
                     <p class="project-description">train an agent to play the world-famous game</p>
                 </div>
                 <a href="https://github.com/DimitriosCha/rl-snake" target="_blank" class="inspect-code-btn">
-                    inspect code
-                </a>
-            </div>
-
-            <div class="project-card">
-                <div class="project-thumbnail">
-                    <img src="./thumbnails/sudoku-solver.png" alt="Sudoku Thumbnail">
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">sudoku solver</h3>
-                    <p class="project-description">backtracking, heuristics and solve all sudokus in no time</p>
-                </div>
-                <a href="https://github.com/DimitriosCha/sudoku-solver" target="_blank" class="inspect-code-btn">
-                    inspect code
+                    Inspect Code
                 </a>
             </div>
             
@@ -1093,7 +1108,7 @@
                     <p class="project-description">investment-advising agent based on learning and news</p>
                 </div>
                 <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
-                    inspect code
+                    Inspect Code
                 </a>
             </div>
         </div>
@@ -1103,29 +1118,29 @@
         <h2>writing & papers</h2>
         <div class="pdfs-grid">
             <div class="pdf-card" onclick="openPDF('documents/RPSLS-Oponent-Modeling.pdf')">
-                <div class="pdf-icon">📚</div>
+                <div class="pdf-icon">📄</div>
                 <h3 class="pdf-title">rpsls tournament</h3>
                 <p class="pdf-subtitle">opponent modeling using game theory, markov chains, no-regret algorithms</p>
                 <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('documents/RPSLS-Oponent-Modeling.pdf')">
-                    ↓ download pdf
+                ↓ Download PDF
                 </a>
             </div>
             
             <div class="pdf-card" onclick="openPDF('documents/Symbolic-Regression.pdf')">
-                <div class="pdf-icon">📚</div>
+                <div class="pdf-icon">📄</div>
                 <h3 class="pdf-title">symbolic regression</h3>
                 <p class="pdf-subtitle">genetic programmic in the context of symbolic regression</p>
                 <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('documents/Symbolic-Regression.pdf')">
-                    ↓ download pdf
+                    ↓ Download PDF
                 </a>
             </div>
             
-            <div class="pdf-card">
-                <div class="pdf-icon">📝</div>
-                <h3 class="pdf-title">product frameworks - brds</h3>
-                <p class="pdf-subtitle">how to take your brd from good to great</p>
-                <a href="https://medium.com/@dimitris.chavouzis/how-to-take-your-brd-from-good-to-great-0fe48232ce27" target="_blank" class="pdf-download-btn">
-                    ↓ read article
+            <div class="pdf-card" onclick="openPDF('documents/product-frameworks.pdf')">
+                <div class="pdf-icon">📄</div>
+                <h3 class="pdf-title">product frameworks for hard problems</h3>
+                <p class="pdf-subtitle">systems thinking & architecture</p>
+                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('documents/product-frameworks.pdf')">
+                    ↓ Download PDF
                 </a>
             </div>
         </div>
@@ -1138,7 +1153,8 @@
             
             <div class="books-viewport" id="booksViewport"> 
                 <div class="books-grid" id="booksGrid">
-                    </div>
+                    <!-- Pages will be dynamically created by JavaScript -->
+                </div>
             </div>
             <div class="pagination-dots" id="paginationDots"></div>
         </div>
@@ -1197,10 +1213,9 @@
             { title: "the republic", description: "i mean, come on… i'm Greek!" },
             { title: "meditations", description: "discipline, robust inner architecture" },
             { title: "the myth of sisyphus", description: "choosing meaning in the absurd" },
-            { title: "nicomachean ethics", description: "virtue as the path to flourishing" },
-            { title: "atomic habits", description: "tiny habits, massive long-term change" },
+            { title: "the design of everyday things", description: "usability as architecture, anti-patterns in product" },
             { title: "thinking, fast and slow", description: "cognitive biases in strategy & decision making" },
-            { title: "radical candor", description: "honesty + care for better leadership" }
+            { title: "sapiens: a brief history of humankind", description: "long-term systems, narrative, and human cooperation" }
         ];
 
         const ITEMS_PER_PAGE = 9; // 3x3 grid
@@ -1294,32 +1309,6 @@
 
         // Initialize books on page load
         initializeBooks();
-
-        // New: Intersection Observer for Shine Effect
-        const aboutSection = document.getElementById('about');
-        const aboutDescription = document.querySelector('.about-description');
-
-        if (aboutSection && aboutDescription) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // Check if section is intersecting AND the animation is not currently running
-                    if (entry.isIntersecting && !aboutDescription.classList.contains('shine')) {
-                        // 1. Apply the shine effect
-                        aboutDescription.classList.add('shine');
-                        
-                        // 2. Remove the shine class after the animation (6000ms)
-                        setTimeout(() => {
-                            aboutDescription.classList.remove('shine');
-                        }, 6000);
-                    }
-                });
-            }, {
-                // Trigger when 10% of the section is visible
-                threshold: 0.1 
-            });
-
-            observer.observe(aboutSection);
-        }
 
         // Typing effect
         const typingElement = document.getElementById('typingText');
