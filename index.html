@@ -623,16 +623,18 @@
             width: max-content; /* Ensure the flex container is wide enough for all pages */
         }
         
-        /* NEW: The book-page defines the width of the visible section (the "page") and is the snap target */
+        /* FIX: Enforce 3 columns per row (6 cards total) to reduce height */
         .book-page {
             flex: 0 0 100%; /* Each page should take up the full width of the books-viewport */
             width: 100%; 
             scroll-snap-align: start; /* Snap to the beginning of the page */
             
-            /* Re-implement the grid display for the books *within* the page */
+            /* FIX: Set a maximum number of columns and min-width for control */
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Use dynamic columns for book items */
+            grid-template-columns: repeat(3, 1fr); /* FORCES 3 COLUMNS on desktop */
             gap: 1.2rem;
+            /* FIX: Auto-adjust row height based on content */
+            grid-auto-rows: minmax(min-content, max-content); 
         }
         
         .book-item {
@@ -908,7 +910,7 @@
                 padding: 2.5rem 2rem;
             }
             
-            /* Ensure the book-page still stacks vertically on mobile */
+            /* FIX: On mobile, only 1 item per row, still short */
             .book-page {
                 grid-template-columns: 1fr;
             }
@@ -1105,6 +1107,9 @@
                             <div class="book-title">the republic</div>
                             <div class="book-description">i mean, come on… i'm Greek!</div>
                         </div>
+                    </div>
+                    
+                    <div class="book-page">
                         <div class="book-item">
                             <div class="book-title">meditations</div>
                             <div class="book-description">discipline, robust inner architecture</div>
@@ -1117,9 +1122,6 @@
                             <div class="book-title">the design of everyday things</div>
                             <div class="book-description">usability as architecture, anti-patterns in product</div>
                         </div>
-                    </div>
-                    
-                    <div class="book-page">
                         <div class="book-item">
                             <div class="book-title">thinking, fast and slow</div>
                             <div class="book-description">cognitive biases in strategy & decision making</div>
