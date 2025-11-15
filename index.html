@@ -600,15 +600,41 @@
             font-family: 'Courier New', monospace;
             opacity: 0.7;
         }
-
-        .books-grid {
-            display: grid;
-            /* Allow 4 items per page on desktop, let them fill naturally */
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.2rem;
+        
+        /* NEW: Wrapper for horizontal scrolling and snapping */
+        .books-viewport {
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
             margin-bottom: 2.5rem; /* Space for pagination dots */
+            /* Hide scrollbar visually */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        .books-viewport::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
 
+        /* NEW: Main container for pages - must be flex to lay pages side-by-side */
+        .books-grid {
+            display: flex;
+            gap: 1.2rem; /* Gap between pages */
+            width: max-content; /* Ensure the flex container is wide enough for all pages */
+        }
+        
+        /* NEW: The book-page defines the width of the visible section (the "page") and is the snap target */
+        .book-page {
+            flex: 0 0 100%; /* Each page should take up the full width of the books-viewport */
+            width: 100%; 
+            scroll-snap-align: start; /* Snap to the beginning of the page */
+            
+            /* Re-implement the grid display for the books *within* the page */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Use dynamic columns for book items */
+            gap: 1.2rem;
+        }
+        
         .book-item {
             padding: 1.8rem;
             background: rgba(255, 255, 255, 0.5);
@@ -618,10 +644,7 @@
             position: relative;
         }
         
-        /* CSS to hide book items for pagination */
-        .book-item.hidden {
-            display: none !important;
-        }
+        /* Remove obsolete .book-item.hidden */
 
         .book-item::before {
             content: '';
@@ -884,9 +907,9 @@
             .books-section {
                 padding: 2.5rem 2rem;
             }
-
-            .books-grid {
-                /* On small screens, force one book per row for pagination */
+            
+            /* Ensure the book-page still stacks vertically on mobile */
+            .book-page {
                 grid-template-columns: 1fr;
             }
         }
@@ -1053,56 +1076,62 @@
         <div class="books-section">
             <div class="binary-header"><span style="font-size: 1.2rem;">📚</span> 01110010‧01100101‧01100001‧01100100‧01110100‧01101000‧01100101‧01101101</div>
             <h2 style="margin-bottom: 2.5rem;">the ideas that built me</h2>
-            <div class="books-grid" id="booksGrid">
-                <div class="book-item">
-                    <div class="book-title">the technological republic</div>
-                    <div class="book-description">cause… edgy, why not</div>
+            
+            <div class="books-viewport" id="booksViewport"> 
+                <div class="books-grid" id="booksGrid">
+                    
+                    <div class="book-page">
+                        <div class="book-item">
+                            <div class="book-title">the technological republic</div>
+                            <div class="book-description">cause… edgy, why not</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">zero to one</div>
+                            <div class="book-description">nonlinear thinking, contrarian creation</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">disciplined entrepreneurship</div>
+                            <div class="book-description">but can it be taught (?)</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">the art of war</div>
+                            <div class="book-description">strategy as psychology, war & business (?)</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">the prince</div>
+                            <div class="book-description">incentives, influence, realpolitik</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">the republic</div>
+                            <div class="book-description">i mean, come on… i'm Greek!</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">meditations</div>
+                            <div class="book-description">discipline, robust inner architecture</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">the myth of sisyphus</div>
+                            <div class="book-description">choosing meaning in the absurd</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">the design of everyday things</div>
+                            <div class="book-description">usability as architecture, anti-patterns in product</div>
+                        </div>
+                    </div>
+                    
+                    <div class="book-page">
+                        <div class="book-item">
+                            <div class="book-title">thinking, fast and slow</div>
+                            <div class="book-description">cognitive biases in strategy & decision making</div>
+                        </div>
+                        <div class="book-item">
+                            <div class="book-title">sapiens: a brief history of humankind</div>
+                            <div class="book-description">long-term systems, narrative, and human cooperation</div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="book-item">
-                    <div class="book-title">zero to one</div>
-                    <div class="book-description">nonlinear thinking, contrarian creation</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">disciplined entrepreneurship</div>
-                    <div class="book-description">but can it be taught (?)</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">the art of war</div>
-                    <div class="book-description">strategy as psychology, war & business (?)</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">the prince</div>
-                    <div class="book-description">incentives, influence, realpolitik</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">the republic</div>
-                    <div class="book-description">i mean, come on… i'm Greek!</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">meditations</div>
-                    <div class="book-description">discipline, robust inner architecture</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">the myth of sisyphus</div>
-                    <div class="book-description">choosing meaning in the absurd</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">atomic habits</div>
-                    <div class="book-description">tiny habits, massive long-term change</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">thinking, fast and slow</div>
-                    <div class="book-description">cognitive biases in strategy & decision making</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">radical candor</div>
-                    <div class="book-description">honesty + care, for better leadership</div>
-                </div>
-                <div class="book-item">
-                    <div class="book-title">nicomachian ethics</div>
-                    <div class="book-description">again... i am Greek</div>
-                </div>
-                </div>
+            </div>
             <div class="pagination-dots" id="paginationDots">
                 </div>
         </div>
@@ -1255,62 +1284,82 @@
             });
         });
 
-        // Book Pagination Logic
-        const booksContainer = document.getElementById('booksGrid');
+        // --- NEW BOOK PAGINATION LOGIC (Horizontal Scroll & Snap) ---
+        const booksViewport = document.getElementById('booksViewport'); // The scroll container
         const dotsContainer = document.getElementById('paginationDots');
-        const bookItems = booksContainer.querySelectorAll('.book-item');
-        
-        // Use 4 items per page for desktop view
-        const booksPerPage = 4; 
-        const totalBooks = bookItems.length;
-        const totalPages = Math.ceil(totalBooks / booksPerPage);
+        const bookPages = booksViewport.querySelectorAll('.book-page'); // The new page elements
+        const totalPages = bookPages.length;
         let currentPage = 0;
+        let isScrollingProgrammatically = false; 
 
-        function renderDots() {
-            dotsContainer.innerHTML = ''; // Clear existing dots
-            for (let i = 0; i < totalPages; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                if (i === currentPage) {
-                    dot.classList.add('active');
-                }
-                dot.dataset.page = i;
-                dot.addEventListener('click', (e) => {
-                    // Smoothly scroll back to the books grid when paginating
-                    booksContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    const page = parseInt(e.target.dataset.page);
-                    showPage(page);
-                });
-                dotsContainer.appendChild(dot);
-            }
-        }
-
-        function showPage(pageIndex) {
-            currentPage = pageIndex;
-            const start = pageIndex * booksPerPage;
-            const end = start + booksPerPage;
-
-            bookItems.forEach((item, index) => {
-                // Hide or show based on the current page range
-                if (index >= start && index < end) {
-                    item.classList.remove('hidden');
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-            
-            // Update active dot
+        function updateDots(pageIndex) {
             dotsContainer.querySelectorAll('.dot').forEach((dot, index) => {
                 dot.classList.toggle('active', index === pageIndex);
             });
         }
 
-        // Initialize pagination only if there are more books than booksPerPage
-        if (totalBooks > booksPerPage) {
-            renderDots();
-            showPage(0);
+        function showPage(pageIndex) {
+            if (pageIndex < 0 || pageIndex >= totalPages) return;
+            
+            currentPage = pageIndex;
+            isScrollingProgrammatically = true; 
+            
+            // Get the calculated offset of the target page element
+            const pageToScrollTo = bookPages[pageIndex];
+            
+            // Use scroll to navigate horizontally
+            booksViewport.scrollTo({
+                left: pageToScrollTo.offsetLeft,
+                behavior: 'smooth'
+            });
+            
+            updateDots(pageIndex);
+            
+            // Allow manual scroll events again after the smooth scroll completes
+            setTimeout(() => {
+                isScrollingProgrammatically = false;
+            }, 500); 
+        }
+        
+        function renderDots() {
+            dotsContainer.innerHTML = ''; // Clear existing dots
+            for (let i = 0; i < totalPages; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                dot.classList.toggle('active', i === currentPage);
+                dot.dataset.page = i;
+                dot.addEventListener('click', (e) => {
+                    const page = parseInt(e.target.dataset.page);
+                    showPage(page); // Page switching is now purely horizontal
+                });
+                dotsContainer.appendChild(dot);
+            }
         }
 
+        // Event listener for manual horizontal scroll/swipe to update dots
+        booksViewport.addEventListener('scroll', () => {
+            if (isScrollingProgrammatically) return; 
+
+            // Find the page currently snapped into view
+            const scrollLeft = booksViewport.scrollLeft;
+            const viewportWidth = booksViewport.clientWidth;
+            
+            // The logic to find the current page: divide scroll position by page width
+            // Rounding to the nearest integer helps with scroll snapping
+            const newPageIndex = Math.round(scrollLeft / viewportWidth);
+            
+            // If the page actually changed, update the active dot
+            if (newPageIndex !== currentPage) {
+                currentPage = newPageIndex;
+                updateDots(currentPage);
+            }
+        });
+
+
+        // Initialize pagination
+        if (totalPages > 1) { 
+            renderDots();
+        }
     </script>
 </body>
 </html>
