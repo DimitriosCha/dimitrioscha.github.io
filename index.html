@@ -601,7 +601,7 @@
             opacity: 0.7;
         }
         
-        /* NEW: Wrapper for horizontal scrolling and snapping */
+        /* Wrapper for horizontal scrolling and snapping */
         .books-viewport {
             overflow-x: scroll;
             scroll-snap-type: x mandatory;
@@ -616,37 +616,55 @@
             display: none; /* Chrome, Safari, Opera */
         }
 
-        /* NEW: Main container for pages - must be flex to lay pages side-by-side */
+        /* Main container for pages - must be flex to lay pages side-by-side */
         .books-grid {
             display: flex;
             gap: 1.2rem; /* Gap between pages */
             width: max-content; /* Ensure the flex container is wide enough for all pages */
         }
         
-        /* FIX: Enforce 3 columns per row (6 cards total) to reduce height */
+        /* FIX 1: Enforce 3 columns and 3 rows (9 cards total) per page */
         .book-page {
-            flex: 0 0 100%; /* Each page should take up the full width of the books-viewport */
+            flex: 0 0 100%; 
             width: 100%; 
-            scroll-snap-align: start; /* Snap to the beginning of the page */
+            scroll-snap-align: start; 
             
-            /* FIX: Set a maximum number of columns and min-width for control */
             display: grid;
             grid-template-columns: repeat(3, 1fr); /* FORCES 3 COLUMNS on desktop */
+            /* New: Enforce a max of 3 rows for a 3x3 layout */
+            grid-template-rows: repeat(3, 1fr); 
             gap: 1.2rem;
-            /* FIX: Auto-adjust row height based on content */
-            grid-auto-rows: minmax(min-content, max-content); 
+            /* Set a fixed maximum height for the grid container to prevent stretching */
+            /* This height is tuned for 3 rows of the new, smaller book cards */
+            max-height: 480px; 
         }
         
         .book-item {
-            padding: 1.8rem;
+            /* FIX 2: Dramatically reduce padding to shrink card height */
+            padding: 1rem 1.2rem; 
             background: rgba(255, 255, 255, 0.5);
-            border-radius: 16px;
+            border-radius: 12px; /* Slight reduction for smaller look */
             border: 1px solid rgba(193, 125, 74, 0.15);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
         
-        /* Remove obsolete .book-item.hidden */
+        /* Ensure the title and description don't add too much vertical space */
+        .book-title {
+            font-size: 1rem; /* Slightly smaller text */
+            font-weight: 600;
+            margin-bottom: 0.4rem; /* Reduced margin */
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+
+        .book-description {
+            font-size: 0.85rem; /* Smaller description text */
+            color: var(--text-tertiary);
+            font-style: italic;
+            line-height: 1.4;
+        }
 
         .book-item::before {
             content: '';
@@ -672,21 +690,6 @@
             box-shadow: 0 8px 20px rgba(193, 125, 74, 0.1);
         }
 
-        .book-title {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.6rem;
-            letter-spacing: -0.01em;
-        }
-
-        .book-description {
-            font-size: 0.9rem;
-            color: var(--text-tertiary);
-            font-style: italic;
-            line-height: 1.5;
-        }
-        
         /* Pagination Dots Styling */
         .pagination-dots {
             display: flex;
@@ -910,9 +913,10 @@
                 padding: 2.5rem 2rem;
             }
             
-            /* FIX: On mobile, only 1 item per row, still short */
+            /* On mobile, only 1 item per row, still short */
             .book-page {
                 grid-template-columns: 1fr;
+                max-height: none; /* Allow vertical stacking on mobile */
             }
         }
 
@@ -1107,10 +1111,7 @@
                             <div class="book-title">the republic</div>
                             <div class="book-description">i mean, come on… i'm Greek!</div>
                         </div>
-                    </div>
-                    
-                    <div class="book-page">
-                        <div class="book-item">
+                         <div class="book-item">
                             <div class="book-title">meditations</div>
                             <div class="book-description">discipline, robust inner architecture</div>
                         </div>
@@ -1122,6 +1123,9 @@
                             <div class="book-title">the design of everyday things</div>
                             <div class="book-description">usability as architecture, anti-patterns in product</div>
                         </div>
+                    </div>
+                    
+                    <div class="book-page">
                         <div class="book-item">
                             <div class="book-title">thinking, fast and slow</div>
                             <div class="book-description">cognitive biases in strategy & decision making</div>
@@ -1286,7 +1290,7 @@
             });
         });
 
-        // --- NEW BOOK PAGINATION LOGIC (Horizontal Scroll & Snap) ---
+        // --- BOOK PAGINATION LOGIC (Horizontal Scroll & Snap) ---
         const booksViewport = document.getElementById('booksViewport'); // The scroll container
         const dotsContainer = document.getElementById('paginationDots');
         const bookPages = booksViewport.querySelectorAll('.book-page'); // The new page elements
@@ -1361,6 +1365,8 @@
         // Initialize pagination
         if (totalPages > 1) { 
             renderDots();
+            // Show the first page (0 offset) on load
+            showPage(0); 
         }
     </script>
 </body>
