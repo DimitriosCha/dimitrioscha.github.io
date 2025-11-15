@@ -593,7 +593,7 @@
         }
 
         .binary-header {
-            font-size: 0.8rem; /* INCREASED from 0.7rem */
+            font-size: 0.8rem; 
             color: var(--accent-warm);
             margin-bottom: 1.5rem;
             letter-spacing: 0.3em;
@@ -623,27 +623,34 @@
             width: max-content; /* Ensure the flex container is wide enough for all pages */
         }
         
-        /* FIX 1: Enforce 3 columns and 3 rows (9 cards total) per page */
+        /* The book page container */
         .book-page {
             flex: 0 0 100%; 
             width: 100%; 
             scroll-snap-align: start; 
             
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* FORCES 3 COLUMNS on desktop */
-            /* New: Enforce a max of 3 rows for a 3x3 layout */
+            /* Default to 3 columns, will be overridden by media query */
+            grid-template-columns: repeat(3, 1fr); 
             grid-template-rows: repeat(3, 1fr); 
             gap: 1.2rem;
-            /* Set a fixed maximum height for the grid container to prevent stretching */
-            /* This height is tuned for 3 rows of the new, smaller book cards */
-            max-height: 480px; 
+            /* Aggressive Height Reduction: Set a fixed maximum height for the grid container */
+            max-height: 380px; 
+        }
+        
+        /* AGGRESSIVE WIDTH REDUCTION FOR DESKTOP */
+        @media (min-width: 992px) {
+             .book-page {
+                /* FORCE 4 COLUMNS on large screens to make cards narrower */
+                grid-template-columns: repeat(4, 1fr); 
+            }
         }
         
         .book-item {
-            /* FIX 2: Dramatically reduce padding to shrink card height */
-            padding: 1rem 1.2rem; 
+            /* Aggressive Padding Reduction to shrink height */
+            padding: 0.7rem 1rem; 
             background: rgba(255, 255, 255, 0.5);
-            border-radius: 12px; /* Slight reduction for smaller look */
+            border-radius: 12px; 
             border: 1px solid rgba(193, 125, 74, 0.15);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -651,16 +658,18 @@
         
         /* Ensure the title and description don't add too much vertical space */
         .book-title {
-            font-size: 1rem; /* Slightly smaller text */
+            /* Smaller text */
+            font-size: 0.9rem; 
             font-weight: 600;
-            margin-bottom: 0.4rem; /* Reduced margin */
+            /* Tighter margin */
+            margin-bottom: 0.3rem; 
             color: var(--text-primary);
-            letter-spacing: -0.01em;
             line-height: 1.3;
         }
 
         .book-description {
-            font-size: 0.85rem; /* Smaller description text */
+            /* Significantly smaller description text */
+            font-size: 0.75rem; 
             color: var(--text-tertiary);
             font-style: italic;
             line-height: 1.4;
@@ -1123,9 +1132,6 @@
                             <div class="book-title">the design of everyday things</div>
                             <div class="book-description">usability as architecture, anti-patterns in product</div>
                         </div>
-                    </div>
-                    
-                    <div class="book-page">
                         <div class="book-item">
                             <div class="book-title">thinking, fast and slow</div>
                             <div class="book-description">cognitive biases in strategy & decision making</div>
@@ -1134,8 +1140,12 @@
                             <div class="book-title">sapiens: a brief history of humankind</div>
                             <div class="book-description">long-term systems, narrative, and human cooperation</div>
                         </div>
+                        <div class="book-item" style="opacity: 0; pointer-events: none; border: none; background: transparent;">
+                            <div class="book-title"></div>
+                            <div class="book-description"></div>
+                        </div>
                     </div>
-
+                    
                 </div>
             </div>
             <div class="pagination-dots" id="paginationDots">
@@ -1367,6 +1377,11 @@
             renderDots();
             // Show the first page (0 offset) on load
             showPage(0); 
+        } else {
+             // If only one page (which is the case now), ensure one dot is visible
+             const dot = document.createElement('div');
+             dot.classList.add('dot', 'active');
+             dotsContainer.appendChild(dot);
         }
     </script>
 </body>
