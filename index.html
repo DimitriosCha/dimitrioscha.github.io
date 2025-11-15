@@ -649,3 +649,766 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             margin-bottom: 2.5rem;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            border-radius: 20px;
+            padding: 1.5rem 0;
+            margin: 0 0 2.5rem 0;
+            position: relative;
+            cursor: grab;
+        }
+        
+        .books-viewport:active {
+            cursor: grabbing;
+        }
+        
+        .books-viewport::-webkit-scrollbar {
+            display: none;
+        }
+
+        .books-grid {
+            display: flex;
+            gap: 0;
+        }
+        
+        .book-page {
+            flex: 0 0 100%; 
+            min-width: 100%;
+            scroll-snap-align: start; 
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            grid-template-rows: repeat(3, 1fr); 
+            gap: 1.2rem;
+            padding: 0 1.5rem;
+            box-sizing: border-box;
+        }
+        
+        .book-item {
+            padding: 1.2rem 1.5rem; 
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px; 
+            border: 1px solid rgba(193, 125, 74, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .book-title {
+            font-size: 1rem; 
+            font-weight: 600;
+            margin-bottom: 0.5rem; 
+            color: var(--text-primary);
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+
+        .book-description {
+            font-size: 0.85rem; 
+            color: var(--text-tertiary);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .book-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: linear-gradient(to bottom, var(--accent-warm), var(--accent-coral));
+            transition: height 0.4s ease;
+            border-radius: 2px;
+        }
+
+        .book-item:hover::before {
+            height: 60%;
+        }
+
+        .book-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(193, 125, 74, 0.4);
+            transform: translateX(8px);
+            box-shadow: 0 8px 20px rgba(193, 125, 74, 0.1);
+        }
+
+        .pagination-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            padding-top: 1rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(193, 125, 74, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .dot:hover {
+            background: rgba(193, 125, 74, 0.6);
+        }
+
+        .dot.active {
+            background: var(--accent-warm);
+            border-color: var(--accent-deep);
+            transform: scale(1.2);
+        }
+
+        .principles-section .principles-list {
+            max-width: 750px;
+        }
+
+        .contact-section {
+            text-align: center;
+            padding-bottom: 4rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-item a {
+            color: var(--accent-warm);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent-deep);
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(244, 235, 227, 0.7));
+            border: 1.5px solid var(--border-subtle);
+            border-radius: 12px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .contact-link:hover {
+            border-color: var(--accent-warm);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(193, 125, 74, 0.15);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(244, 235, 227, 0.9));
+        }
+
+        footer {
+            text-align: center;
+            padding: 3.5rem 2rem;
+            border-top: 1px solid var(--border-subtle);
+            background: rgba(250, 248, 245, 0.8);
+        }
+
+        .footer-tagline {
+            font-size: 0.95rem;
+            color: var(--text-tertiary);
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(90deg, var(--accent-warm), var(--accent-coral), var(--accent-warm));
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 22, 20, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 900px;
+            height: 90vh;
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(193, 125, 74, 0.1);
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 10;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(193, 125, 74, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-iframe {
+            width: 100%;
+            height: calc(100% - 70px);
+            border: none;
+            border-radius: 12px;
+            margin-top: 70px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(250, 248, 245, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .hero {
+                padding-top: 6rem;
+            }
+
+            .projects-grid,
+            .pdfs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .books-section {
+                padding: 2.5rem 2rem;
+            }
+            
+            .book-page {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 28px;
+            height: 48px;
+            border: 2px solid var(--accent-warm);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+            opacity: 0.6;
+        }
+
+        .scroll-indicator::before {
+            content: '';
+            width: 4px;
+            height: 8px;
+            background: var(--accent-warm);
+            border-radius: 2px;
+            animation: scroll 2s ease-in-out infinite;
+        }
+
+        @keyframes scroll {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(10px); opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">build · fail · repeat</div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">about</a></li>
+                <li><a href="#work">work</a></li>
+                <li><a href="#writing">writing</a></li>
+                <li><a href="#books">library</a></li>
+                <li><a href="#principles">signal</a></li>
+                <li><a href="#contact">contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-image-container">
+            <div class="hero-image">
+              <img src="Dimi-Git.jpg" alt="Portrait of me">
+            </div>
+        </div>
+        <h1 class="hero-title">dimitrios chavouzis</h1>
+        <p class="hero-subtitle">ai strategist • product manager</p>
+        <div class="typing-container">
+            <span class="typing-text" id="typingText"></span>
+            <span class="typing-cursor"></span>
+        </div>
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <section id="about">
+        <h2>a little about me</h2>
+        <div class="about-content">
+            <div class="principles-list">
+                <div>▹ i read, learn, build, and interact with intention</div>
+                <div>▹ i challenge, fail, iterate… on purpose</div>
+                <div>▹ i find intelligence in human-centered design</div>
+                <div>▹ i choose edges over comfort, in thought & life</div>
+                <div>▹ i believe 0s & 1s > english</div>
+            </div>
+            <div class="about-description">
+                <p>i build systems that make intelligence usable — for humans, for agents, and for the teams shaping the next wave of ai my career has been a cycle of curiosity → experimentation → delivery, moving from data engineering to product r&d and management to AI evaluation strategy because growth has always mattered more than titles. i work where ambiguity lives: designing experiments with frontier labs, architecting workflows, and turning complex ideas into tools people actually use. i care about clarity, craft, and momentum — building, breaking, and rebuilding until the thing is better than before. mostly, i'm just trying to understand how humans think, how machines learn, and how to design workflows that make both a little more aligned. and somewhere along that path, I moved across 3 continents, to lead teams, build products, learn cultures and grow...</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="work">
+        <h2>work & projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-thumbnail">
+                    <img src="./thumbnails/RPSLS-Work.png" alt="RPSLS Thumbnail">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">rpsls tournament</h3>
+                    <p class="project-description">opponent modeling strategies in tournament env</p>
+                </div>
+                <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
+                    Inspect Code
+                </a>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-thumbnail">
+                    <img src="./thumbnails/snake-game.png" alt="Snake Thumbnail">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">snake game rl env</h3>
+                    <p class="project-description">train an agent to play the world-famous game</p>
+                </div>
+                <a href="https://github.com/DimitriosCha/rl-snake" target="_blank" class="inspect-code-btn">
+                    Inspect Code
+                </a>
+            </div>
+            
+            <div class="project-card">
+                <div class="project-thumbnail">
+                    <img src="./thumbnails/stock-advisor.png" alt="Stock Thumbnail">
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">stock advisor</h3>
+                    <p class="project-description">investment-advising agent based on learning and news</p>
+                </div>
+                <a href="https://github.com/DimitriosCha/rpsls-game" target="_blank" class="inspect-code-btn">
+                    Inspect Code
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="writing">
+        <h2>writing & papers</h2>
+        <div class="pdfs-grid">
+            <div class="pdf-card" onclick="openPDF('documents/RPSLS-Oponent-Modeling.pdf')">
+                <div class="pdf-icon">📄</div>
+                <h3 class="pdf-title">rpsls tournament</h3>
+                <p class="pdf-subtitle">opponent modeling using game theory, markov chains, no-regret algorithms</p>
+                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('documents/RPSLS-Oponent-Modeling.pdf')">
+                ↓ Download PDF
+                </a>
+            </div>
+            
+            <div class="pdf-card" onclick="openPDF('documents/Symbolic-Regression.pdf')">
+                <div class="pdf-icon">📄</div>
+                <h3 class="pdf-title">symbolic regression</h3>
+                <p class="pdf-subtitle">genetic programmic in the context of symbolic regression</p>
+                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('documents/Symbolic-Regression.pdf')">
+                    ↓ Download PDF
+                </a>
+            </div>
+            
+            <div class="pdf-card" onclick="openPDF('documents/product-frameworks.pdf')">
+                <div class="pdf-icon">📄</div>
+                <h3 class="pdf-title">product frameworks for hard problems</h3>
+                <p class="pdf-subtitle">systems thinking & architecture</p>
+                <a href="#" class="pdf-download-btn" onclick="event.stopPropagation(); downloadPDF('documents/product-frameworks.pdf')">
+                    ↓ Download PDF
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="books">
+        <div class="books-section">
+            <div class="binary-header"><span style="font-size: 1.2rem;">📚</span> 01110010·01100101·01100001·01100100·01110100·01101000·01100101·01101101</div>
+            <h2 style="margin-bottom: 2.5rem;">the ideas that built me</h2>
+            
+            <div class="books-viewport" id="booksViewport"> 
+                <div class="books-grid" id="booksGrid">
+                    </div>
+            </div>
+            <div class="pagination-dots" id="paginationDots"></div>
+        </div>
+    </section>
+
+    <section id="principles" class="principles-section">
+        <h2>operating principles</h2>
+        <div class="principles-list">
+            <div>▹ i read, learn, build, and interact with intention</div>
+            <div>▹ i challenge, fail, iterate… on purpose</div>
+            <div>▹ i find intelligence in human-centered design</div>
+            <div>▹ i choose edges over comfort, in thought & life</div>
+            <div>▹ i believe 0s & 1s > english</div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>contact info</h2>
+        <div class="contact-info">
+            <div class="contact-item">
+                📍 Charlotte, NC
+            </div>
+            <div class="contact-item">
+                ✉ <a href="mailto:dimitris.chavouzis@gmail.com">dimitris.chavouzis@gmail.com</a>
+            </div>
+        </div>
+        <div class="contact-links">
+            <a href="https://github.com/DimitriosCha" target="_blank" class="contact-link">
+                GitHub
+            </a>
+            <a href="https://linkedin.com/in/dimitrios-chavouzis" target="_blank" class="contact-link">
+                LinkedIn
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p class="footer-tagline">this page was written in english, rendered in 0s & 1s.</p>
+    </footer>
+
+    <div class="modal" id="pdfModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <iframe class="modal-iframe" id="pdfFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // All book data
+        const allBooks = [
+            { title: "the technological republic", description: "cause… edgy, why not" },
+            { title: "zero to one", description: "nonlinear thinking, contrarian creation" },
+            { title: "disciplined entrepreneurship", description: "but can it be taught (?)" },
+            { title: "the art of war", description: "strategy as psychology, war & business (?)" },
+            { title: "the prince", description: "incentives, influence, realpolitik" },
+            { title: "the republic", description: "i mean, come on… i'm Greek!" },
+            { title: "meditations", description: "discipline, robust inner architecture" },
+            { title: "the myth of sisyphus", description: "choosing meaning in the absurd" },
+            { title: "the design of everyday things", description: "usability as architecture, anti-patterns in product" },
+            { title: "thinking, fast and slow", description: "cognitive biases in strategy & decision making" },
+            { title: "sapiens: a brief history of humankind", description: "long-term systems, narrative, and human cooperation" }
+        ];
+
+        const ITEMS_PER_PAGE = 9; // 3x3 grid
+        const totalPages = Math.ceil(allBooks.length / ITEMS_PER_PAGE);
+        let currentPage = 0;
+        let isScrolling = false;
+
+        // Create all pages with books
+        function initializeBooks() {
+            const booksGrid = document.getElementById('booksGrid');
+            const dotsContainer = document.getElementById('paginationDots');
+            
+            // Create pages
+            for (let pageIndex = 0; pageIndex < totalPages; pageIndex++) {
+                const page = document.createElement('div');
+                page.classList.add('book-page');
+                
+                const startIdx = pageIndex * ITEMS_PER_PAGE;
+                const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, allBooks.length);
+                
+                for (let i = startIdx; i < endIdx; i++) {
+                    const book = allBooks[i];
+                    const bookItem = document.createElement('div');
+                    bookItem.classList.add('book-item');
+                    bookItem.innerHTML = `
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-description">${book.description}</div>
+                    `;
+                    page.appendChild(bookItem);
+                }
+                
+                booksGrid.appendChild(page);
+            }
+            
+            // Create dots
+            for (let i = 0; i < totalPages; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToPage(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function goToPage(pageIndex) {
+            if (pageIndex < 0 || pageIndex >= totalPages || isScrolling) return;
+            
+            currentPage = pageIndex;
+            isScrolling = true;
+            
+            const viewport = document.getElementById('booksViewport');
+            const targetScroll = viewport.clientWidth * pageIndex;
+            
+            viewport.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+            
+            updateDots();
+            
+            setTimeout(() => {
+                isScrolling = false;
+            }, 600);
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentPage);
+            });
+        }
+
+        // Handle manual scrolling
+        let scrollTimeout;
+        document.getElementById('booksViewport').addEventListener('scroll', function() {
+            if (isScrolling) return;
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const viewport = this;
+                const scrollLeft = viewport.scrollLeft;
+                const pageWidth = viewport.clientWidth;
+                const newPage = Math.round(scrollLeft / pageWidth);
+                
+                if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
+                    currentPage = newPage;
+                    updateDots();
+                }
+            }, 100);
+        });
+
+        // Initialize books on page load
+        initializeBooks();
+
+        // New: Intersection Observer for Shine Effect
+        const aboutSection = document.getElementById('about');
+        const aboutDescription = document.querySelector('.about-description');
+
+        if (aboutSection && aboutDescription) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Check if section is intersecting AND the animation is not currently running
+                    if (entry.isIntersecting && !aboutDescription.classList.contains('shine')) {
+                        // 1. Apply the shine effect
+                        aboutDescription.classList.add('shine');
+                        
+                        // 2. Remove the shine class after the animation (6000ms)
+                        setTimeout(() => {
+                            aboutDescription.classList.remove('shine');
+                        }, 6000);
+                    }
+                });
+            }, {
+                // Trigger when 10% of the section is visible
+                threshold: 0.1 
+            });
+
+            observer.observe(aboutSection);
+        }
+
+        // Typing effect
+        const typingElement = document.getElementById('typingText');
+        const phrases = [
+            "training agents for humans",
+            "debugging human-tool-agent interaction",
+            "refactoring how people think",
+            "prioritizing signal, unapologetically",
+            "simplifying the complex"
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            let displayText = '';
+
+            if (isDeleting) {
+                displayText = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                displayText = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            typingElement.textContent = displayText;
+
+            let typeSpeed = isDeleting ? 75 : 150;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', type);
+
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => { 
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // PDF Modal
+        const modal = document.getElementById('pdfModal');
+        const modalClose = document.getElementById('modalClose');
+        const pdfFrame = document.getElementById('pdfFrame');
+
+        function openPDF(src) {
+            pdfFrame.src = src;
+            modal.classList.add('active');
+        }
+
+        function closePDF() {
+            modal.classList.remove('active');
+            pdfFrame.src = '';
+        }
+
+        function downloadPDF(src) {
+            const link = document.createElement('a');
+            link.href = src;
+            link.download = src.split('/').pop();
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        modalClose.addEventListener('click', closePDF);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closePDF();
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); 
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
