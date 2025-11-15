@@ -603,8 +603,10 @@
 
         .books-grid {
             display: grid;
+            /* Allow 4 items per page on desktop, let them fill naturally */
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.2rem;
+            margin-bottom: 2.5rem; /* Space for pagination dots */
         }
 
         .book-item {
@@ -614,6 +616,11 @@
             border: 1px solid rgba(193, 125, 74, 0.15);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+        }
+        
+        /* CSS to hide book items for pagination */
+        .book-item.hidden {
+            display: none !important;
         }
 
         .book-item::before {
@@ -653,6 +660,34 @@
             color: var(--text-tertiary);
             font-style: italic;
             line-height: 1.5;
+        }
+        
+        /* Pagination Dots Styling */
+        .pagination-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            padding-top: 1rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(193, 125, 74, 0.3); /* Muted warm color */
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .dot:hover {
+            background: rgba(193, 125, 74, 0.6);
+        }
+
+        .dot.active {
+            background: var(--accent-warm); /* Full warm color */
+            border-color: var(--accent-deep);
+            transform: scale(1.2);
         }
 
         .principles-section .principles-list {
@@ -851,6 +886,7 @@
             }
 
             .books-grid {
+                /* On small screens, force one book per row for pagination */
                 grid-template-columns: 1fr;
             }
         }
@@ -1017,7 +1053,7 @@
         <div class="books-section">
             <div class="binary-header"><span style="font-size: 1.2rem;">📚</span> 01110010‧01100101‧01100001‧01100100‧01110100‧01101000‧01100101‧01101101</div>
             <h2 style="margin-bottom: 2.5rem;">the ideas that built me</h2>
-            <div class="books-grid">
+            <div class="books-grid" id="booksGrid">
                 <div class="book-item">
                     <div class="book-title">the technological republic</div>
                     <div class="book-description">cause… edgy, why not</div>
@@ -1050,7 +1086,25 @@
                     <div class="book-title">the myth of sisyphus</div>
                     <div class="book-description">choosing meaning in the absurd</div>
                 </div>
-            </div>
+                <div class="book-item">
+                    <div class="book-title">atomic habits</div>
+                    <div class="book-description">tiny habits, massive long-term change</div>
+                </div>
+                <div class="book-item">
+                    <div class="book-title">thinking, fast and slow</div>
+                    <div class="book-description">cognitive biases in strategy & decision making</div>
+                </div>
+                <div class="book-item">
+                    <div class="book-title">radical candor</div>
+                    <div class="book-description">honesty + care, for better leadership</div>
+                </div>
+                <div class="book-item">
+                    <div class="book-title">nicomachian ethics</div>
+                    <div class="book-description">again... i am Greek</div>
+                </div>
+                </div>
+            <div class="pagination-dots" id="paginationDots">
+                </div>
         </div>
     </section>
 
@@ -1200,6 +1254,62 @@
                 }
             });
         });
+
+        // Book Pagination Logic
+        const booksContainer = document.getElementById('booksGrid');
+        const dotsContainer = document.getElementById('paginationDots');
+        const bookItems = booksContainer.querySelectorAll('.book-item');
+        
+        // Use 4 items per page for desktop view
+        const booksPerPage = 4; 
+        const totalBooks = bookItems.length;
+        const totalPages = Math.ceil(totalBooks / booksPerPage);
+        let currentPage = 0;
+
+        function renderDots() {
+            dotsContainer.innerHTML = ''; // Clear existing dots
+            for (let i = 0; i < totalPages; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === currentPage) {
+                    dot.classList.add('active');
+                }
+                dot.dataset.page = i;
+                dot.addEventListener('click', (e) => {
+                    // Smoothly scroll back to the books grid when paginating
+                    booksContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const page = parseInt(e.target.dataset.page);
+                    showPage(page);
+                });
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function showPage(pageIndex) {
+            currentPage = pageIndex;
+            const start = pageIndex * booksPerPage;
+            const end = start + booksPerPage;
+
+            bookItems.forEach((item, index) => {
+                // Hide or show based on the current page range
+                if (index >= start && index < end) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+            
+            // Update active dot
+            dotsContainer.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === pageIndex);
+            });
+        }
+
+        // Initialize pagination only if there are more books than booksPerPage
+        if (totalBooks > booksPerPage) {
+            renderDots();
+            showPage(0);
+        }
 
     </script>
 </body>
