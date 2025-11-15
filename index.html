@@ -359,7 +359,7 @@
             transform: translateY(-12px) scale(1.02);
             border-color: var(--accent-warm);
             box-shadow: 
-                0 30px 80px rgba(193, 125, 74, 0.15),
+                0 30px 80px rgba(193, 125, 74, 0.2),
                 0 12px 30px rgba(193, 125, 74, 0.1);
         }
 
@@ -647,8 +647,8 @@
         }
         
         .book-item {
-            /* Aggressive Padding Reduction to shrink height */
-            padding: 0.7rem 1rem; 
+            /* Final aggressive padding reduction */
+            padding: 0.6rem 0.9rem; 
             background: rgba(255, 255, 255, 0.5);
             border-radius: 12px; 
             border: 1px solid rgba(193, 125, 74, 0.15);
@@ -1140,11 +1140,7 @@
                             <div class="book-title">sapiens: a brief history of humankind</div>
                             <div class="book-description">long-term systems, narrative, and human cooperation</div>
                         </div>
-                        <div class="book-item" style="opacity: 0; pointer-events: none; border: none; background: transparent;">
-                            <div class="book-title"></div>
-                            <div class="book-description"></div>
                         </div>
-                    </div>
                     
                 </div>
             </div>
@@ -1303,10 +1299,18 @@
         // --- BOOK PAGINATION LOGIC (Horizontal Scroll & Snap) ---
         const booksViewport = document.getElementById('booksViewport'); // The scroll container
         const dotsContainer = document.getElementById('paginationDots');
-        const bookPages = booksViewport.querySelectorAll('.book-page'); // The new page elements
-        const totalPages = bookPages.length;
+        // Select all items, not just pages, to calculate visibility
+        const allBookItems = document.querySelectorAll('.book-item'); 
         let currentPage = 0;
         let isScrollingProgrammatically = false; 
+        
+        // Determine the number of columns and rows based on the media query for the current view.
+        // For simplicity, we assume the desktop view (4x3 = 12 items/page) will be the most common scroll view.
+        // We set a fixed items-per-page for the JS logic, and rely on CSS for the layout.
+        const itemsPerPage = 12; // 4 columns * 3 rows
+        const totalItems = allBookItems.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
 
         function updateDots(pageIndex) {
             dotsContainer.querySelectorAll('.dot').forEach((dot, index) => {
@@ -1320,14 +1324,34 @@
             currentPage = pageIndex;
             isScrollingProgrammatically = true; 
             
-            // Get the calculated offset of the target page element
-            const pageToScrollTo = bookPages[pageIndex];
+            // Calculate the required scroll position. 
+            // Since we use the CSS trick of forcing all items into one single .book-page, 
+            // the totalPages calculated here needs to be reflected in the horizontal scroll amount.
+            // We need to find the element that is at the start of that page range.
             
-            // Use scroll to navigate horizontally
-            booksViewport.scrollTo({
-                left: pageToScrollTo.offsetLeft,
-                behavior: 'smooth'
-            });
+            // To simplify, since we've changed the HTML structure to use multiple `.book-page` elements 
+            // side-by-side inside the `.books-grid` (which uses flex and `width: max-content`), 
+            // we will go back to the element selection.
+            
+            // Re-select pages to ensure we use the correct structure
+            const bookPages = booksViewport.querySelectorAll('.book-page');
+            
+            // Check if the page we are trying to scroll to exists
+            if(bookPages.length > pageIndex) {
+                const pageToScrollTo = bookPages[pageIndex];
+                
+                // Use scroll to navigate horizontally
+                booksViewport.scrollTo({
+                    left: pageToScrollTo.offsetLeft,
+                    behavior: 'smooth'
+                });
+            } else {
+                 // Fallback: If only one page (length 1), the offset is 0. 
+                 booksViewport.scrollTo({
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            }
             
             updateDots(pageIndex);
             
@@ -1339,6 +1363,31 @@
         
         function renderDots() {
             dotsContainer.innerHTML = ''; // Clear existing dots
+            
+            // Since the HTML has a single .book-page element, we need to manually create
+            // more .book-page elements if the book count exceeds 12, or the horizontal scroll
+            // will not function correctly with the CSS snap logic.
+            
+            // **New logic: Dynamically restructure the DOM for correct snapping**
+            const booksGrid = document.getElementById('booksGrid');
+            const bookItems = Array.from(allBookItems);
+            booksGrid.innerHTML = ''; // Clear the current single page
+
+            // Create pages and append items
+            for (let i = 0; i < totalPages; i++) {
+                const page = document.createElement('div');
+                page.classList.add('book-page');
+
+                const start = i * itemsPerPage;
+                const end = start + itemsPerPage;
+                const itemsForPage = bookItems.slice(start, end);
+
+                itemsForPage.forEach(item => page.appendChild(item));
+                booksGrid.appendChild(page);
+            }
+            // End DOM restructure
+
+            // Now, create the dots based on the new totalPages
             for (let i = 0; i < totalPages; i++) {
                 const dot = document.createElement('div');
                 dot.classList.add('dot');
@@ -1365,7 +1414,7 @@
             const newPageIndex = Math.round(scrollLeft / viewportWidth);
             
             // If the page actually changed, update the active dot
-            if (newPageIndex !== currentPage) {
+            if (newPageIndex !== currentPage && newPageIndex < totalPages) {
                 currentPage = newPageIndex;
                 updateDots(currentPage);
             }
@@ -1373,12 +1422,12 @@
 
 
         // Initialize pagination
-        if (totalPages > 1) { 
+        if (totalItems > itemsPerPage) { 
+            // If more items than fit on one page (12), we need multiple pages/dots
             renderDots();
-            // Show the first page (0 offset) on load
             showPage(0); 
         } else {
-             // If only one page (which is the case now), ensure one dot is visible
+             // If only one page (11 items fit in 12 slots), ensure one dot is active and visible
              const dot = document.createElement('div');
              dot.classList.add('dot', 'active');
              dotsContainer.appendChild(dot);
