@@ -1412,6 +1412,29 @@
         // Initialize books on page load
         initializeBooks();
 
+        // Shine effect for about description
+        const aboutDesc = document.querySelector('.about-description');
+        if (aboutDesc) {
+            const shineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !aboutDesc.dataset.shined) {
+                        aboutDesc.classList.add('shine');
+                        aboutDesc.dataset.shined = 'true';
+                        
+                        setTimeout(() => {
+                            aboutDesc.classList.remove('shine');
+                        }, 6000);
+                    } else if (!entry.isIntersecting) {
+                        delete aboutDesc.dataset.shined;
+                    }
+                });
+            }, {
+                threshold: 0.3
+            });
+            
+            shineObserver.observe(aboutDesc);
+        }
+
         // Typing effect
         const typingElement = document.getElementById('typingText');
         const phrases = [
